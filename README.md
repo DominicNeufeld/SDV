@@ -9,29 +9,16 @@ git clone <https://github.com/DominicNeufeld/SDV.git>
 cd SDV
 
 ### Backend
-cd backend
+```
 gradle wrapper
-cd ..
-
-### Frontend
-cd frontend
-npm install
-cd ..
 ```
 ## Projekt starten
-### Backend
-```bash
-cd backend
-./gradlew bootRun
-```
 
-→`http://localhost:8080`
-
-### Frontend
+### Starten
 
 ```bash
-cd frontend
-npm run dev
+docker compose up -d     
+./gradlew bootRun         
 ```
 
-→ `http://localhost:5173`
+→ `http://localhost:8080`

@@ -1,85 +1,14 @@
 <!doctype html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Materialerfassung</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="/src/style.css" />
-</head>
-<body>
-  <div class="sheet">
-    <header class="sheet__header">
-      <div class="sheet__tag">MAT&nbsp;01</div>
-      <div class="sheet__headtext">
-        <h1>Materialerfassung</h1>
-        <p>Prototyp &mdash; schnelle Erfassung im Feld</p>
-      </div>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material-Schema Prototyp</title>
+  </head>
 
-    <form id="material-form" class="card" novalidate>
-      <div class="corner corner--tl"></div>
-      <div class="corner corner--tr"></div>
-      <div class="corner corner--bl"></div>
-      <div class="corner corner--br"></div>
+  <body>
+    <div id="root"></div>
 
-      <div class="field">
-        <label for="bezeichnung">Bezeichnung</label>
-        <input
-          id="bezeichnung"
-          name="bezeichnung"
-          type="text"
-          placeholder="z. B. Stahlrohr DN50"
-          autocomplete="off"
-          required
-        />
-      </div>
-
-      <div class="field">
-        <span class="field__legend">Aggregatzustand</span>
-        <div class="switchgroup" role="radiogroup" aria-label="Aggregatzustand">
-          <label class="switch">
-            <input type="radio" name="aggregatzustand" value="FEST" checked />
-            <span class="switch__control"></span>
-            <span class="switch__label">Fest</span>
-          </label>
-          <label class="switch">
-            <input type="radio" name="aggregatzustand" value="GAS" />
-            <span class="switch__control"></span>
-            <span class="switch__label">Gas</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="field field--conditional" id="gas-druck-field" hidden>
-        <label for="gasDruckBar">Gasdruck (bar)</label>
-        <input
-          id="gasDruckBar"
-          name="gasDruckBar"
-          type="number"
-          step="0.1"
-          min="0"
-          placeholder="z. B. 4.5"
-        />
-      </div>
-
-      <button type="submit" class="submit">Material erfassen</button>
-      <p class="status" id="status" role="status"></p>
-    </form>
-
-    <section class="list">
-      <h2>Erfasste Materialien <span id="list-count" class="list__count">0</span></h2>
-      <div id="list-body" class="list__body">
-        <p class="list__empty">Noch nichts erfasst.</p>
-      </div>
-    </section>
-  </div>
-
-  <script type="module" src="/src/main.ts"></script>
-</body>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

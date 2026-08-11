@@ -1,0 +1,63 @@
+package com.example.matschema.domain;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.Instant;
+import java.util.Map;
+
+/**
+ * Ordnet einer {@link Category} genau EIN globales {@link AttributeDefinition}
+ * zu und traegt dabei alle kategoriespezifischen Eigenschaften:
+ * Pflichtfeld?, Reihenfolge im Formular, Sichtbarkeitsregel (visibleWhen).
+ *
+ * Die visibleWhen-Regel ist bewusst generisch als JSON/Map modelliert, damit
+ * sie von der {@link com.example.matschema.rule.RuleEngine} interpretiert
+ * werden kann, ohne dass fuer neue Regeln neuer Java-Code noetig ist -
+ * solange sich die Regel aus den vorhandenen Operatoren zusammensetzen laesst.
+ *
+ * Beispiele fuer visible_when (JSON in der DB):
+ *   null                                                              -> immer sichtbar
+ *   {"attribute":"physicalState","operator":"EQUALS","value":"GAS"}   -> einfache Regel
+ *   {"and":[ {...}, {...} ]}                                          -> Verknuepfung
+ *   {"or": [ {...}, {...} ]}
+ */
+@Entity
+@Table(name = "category_attributes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class CategoryAttribute {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "attribute_definition_id")
+    private AttributeDefinition attributeDefinition;
+
+    @Column(nullable = false)
+    private boolean required;
+
+    @Column(name = "sort_order", nullable = false)
+    private int sortOrder;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "visible_when")
+    private Map<String, Object> visibleWhen;
+
+    @Column(name = "default_value")
+    private String defaultValue;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
+}
