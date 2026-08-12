@@ -25,8 +25,7 @@ export default function App() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [schema, setSchema] = useState<CategorySchema | null>(null);
-  // values ist jetzt ein verschachtelter Baum (nicht mehr flach), Struktur
-  // ergibt sich aus parentCode/repeatable/variantOfCode im Schema.
+
   const [values, setValues] = useState<unknown>({});
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -34,7 +33,7 @@ export default function App() {
 
   const tree = useMemo(() => (schema ? buildAttributeTree(schema.attributes) : []), [schema]);
 
-  // Kategorien einmalig laden
+
   useEffect(() => {
     (async () => {
       try {
@@ -51,7 +50,6 @@ export default function App() {
     })();
   }, []);
 
-  // Schema neu laden, sobald sich die Kategorie aendert
   useEffect(() => {
     if (!selectedCategory) return;
     (async () => {
@@ -111,7 +109,7 @@ export default function App() {
   return (
     <>
       <header>
-        <h1>Create Material</h1>
+        <h1>Sample Identification</h1>
       </header>
 
       <main>
@@ -156,6 +154,14 @@ export default function App() {
         <section className="panel panel--terminal">
           <div className="panel-heading panel-heading--terminal">JSON</div>
           <pre className="white">{resultOutput}</pre>
+
+          <button
+            type="button"
+            className="btn-copy-json"
+            onClick={() => navigator.clipboard.writeText(resultOutput)}
+          >
+            Copy
+          </button>
         </section>
       </main>
     </>

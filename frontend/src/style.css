@@ -109,7 +109,7 @@ main {
 
 .panel-heading {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 1rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--ink-muted);
@@ -118,6 +118,33 @@ main {
 
 .panel-heading--terminal {
     color: var(--terminal-accent);
+}
+
+.panel--terminal {
+    position: relative;
+}
+
+.btn-copy-json {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+
+    border: 1px solid var(--terminal-accent);
+    background: transparent;
+    color: var(--terminal-accent);
+
+    border-radius: 6px;
+    padding: 6px 10px;
+
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+
+    cursor: pointer;
+}
+
+.btn-copy-json:hover {
+    background: var(--terminal-accent);
+    color: var(--terminal-bg);
 }
 
 .visually-hidden {
@@ -136,6 +163,7 @@ select#categorySelect {
     font-size: 0.95em;
     background: var(--surface-alt);
     color: var(--ink);
+    height: 30px;
 }
 
 .field {
@@ -244,7 +272,7 @@ button[type="submit"] {
 button[type="submit"]:hover { background: #0F5647; }
 button[type="submit"]:active { transform: translateY(1px); }
 
-/* Terminal-artiges JSON-Ergebnispanel */
+
 .panel--terminal {
     background: var(--terminal-bg);
     border-color: #26362F;
