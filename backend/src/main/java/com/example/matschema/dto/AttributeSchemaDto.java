@@ -5,11 +5,6 @@ import com.example.matschema.domain.DataType;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Alles, was der generische Form-Renderer im Frontend braucht, um EIN
- * Formularfeld darzustellen - unabhaengig davon, um welches konkrete
- * Attribut es sich handelt.
- */
 public record AttributeSchemaDto(
         String code,
         String label,

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public record MaterialRequest(
         @NotBlank String categoryCode,
-        @NotBlank String name,
+        String name,
         @NotNull Map<String, Object> values
 ) {
 }

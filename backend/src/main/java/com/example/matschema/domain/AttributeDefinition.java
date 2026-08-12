@@ -8,10 +8,6 @@ import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 import java.util.List;
 
-/**
- * Globale Definition EINES Attributs. Existiert genau einmal, unabhaengig
- * davon, wie viele Kategorien es verwenden (siehe {@link CategoryAttribute}).
- */
 @Entity
 @Table(name = "attribute_definitions")
 @Getter
@@ -39,7 +35,7 @@ public class AttributeDefinition {
 
     private String unit;
 
-    /** Nur relevant, wenn dataType == ENUM. */
+    /** Only relevant when: dataType == ENUM. */
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "enum_values")
     private List<String> enumValues;

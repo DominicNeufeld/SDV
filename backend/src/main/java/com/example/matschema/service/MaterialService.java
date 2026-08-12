@@ -25,10 +25,9 @@ public class MaterialService {
     @Transactional
     public MaterialResponse create(MaterialRequest request) {
         Category category = categoryRepository.findByCode(request.categoryCode())
-                .orElseThrow(() -> new EntityNotFoundException("Kategorie nicht gefunden: " + request.categoryCode()));
+                .orElseThrow(() -> new EntityNotFoundException("Category not found: " + request.categoryCode()));
 
-        // Backend bleibt Source of Truth: unabhaengig davon, was das
-        // Frontend geschickt/versteckt hat, wird hier vollstaendig geprueft.
+     
         Map<String, Object> cleanValues = validationService.validateAndClean(category, request.values());
 
         Material material = Material.builder()
@@ -45,7 +44,7 @@ public class MaterialService {
 
     public MaterialResponse getById(Long id) {
         Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Material nicht gefunden: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Material not found " + id));
         return toResponse(material);
     }
 

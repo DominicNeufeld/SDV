@@ -1,19 +1,3 @@
-/**
- * Generischer Formular-Renderer (React-Version).
- *
- * Wichtig: Diese Komponente kennt KEIN einziges konkretes Attribut
- * ("physicalState", "gasPressureBar" o.ae. tauchen hier nirgends als
- * String auf). Alles kommt zur Laufzeit aus dem Schema-Endpunkt.
- * Neues Attribut in der DB -> taucht hier automatisch im Formular auf,
- * ohne dass diese Datei angefasst wird.
- *
- * Die Sichtbarkeitspruefung (visibleWhen) wird hier client-seitig
- * gespiegelt, damit sich das Formular beim Tippen live aktualisiert.
- * Massgeblich und Source of Truth bleibt aber IMMER das Backend
- * (siehe MaterialValidationService), das jede Anfrage nochmal komplett
- * prueft.
- */
-
 import { useEffect, useMemo, useState } from "react";
 import "./style.css";
 
@@ -56,7 +40,6 @@ interface FieldError {
   message: string;
 }
 
-/** Wertet eine visibleWhen-Regel generisch aus (spiegelt RuleEngine.java). */
 function evaluateRule(rule: Rule | null | undefined, values: FieldValues): boolean {
   if (!rule) return true;
 
@@ -111,7 +94,7 @@ export default function App() {
       try {
         const cats = await fetchJson<Category[]>("/api/categories");
         if (cats.length === 0) {
-          setLoadError("Keine Kategorien gefunden. Sind die Flyway-Migrationen (V1/V2) gelaufen?");
+          setLoadError("No category found!");
           return;
         }
         setCategories(cats);
@@ -252,33 +235,25 @@ export default function App() {
   return (
     <>
       <header>
-        <p className="eyebrow">
-          Schema-getriebenes Formular · generiert aus <code>attribute_definitions</code>
-        </p>
-        <h1>Material anlegen</h1>
-        <p className="subtitle">
-          Jedes Feld unten wird zur Laufzeit aus dem Schema gerendert, das{" "}
-          <code>GET /api/categories/{"{code}"}/schema</code> liefert. Der Mono-Tag neben jedem Label
-          ist der echte JSON-Attributschlüssel.
-        </p>
+        <h1>Create Material</h1>
       </header>
 
       <main>
         <section className="panel">
-          <div className="panel-heading">Formular</div>
+          <div className="panel-heading">Form</div>
 
           {loadError && (
             <p style={{ color: "#c0392b" }}>
-              Schema konnte nicht geladen werden: {loadError}. Prüfe in der Browser-Konsole (F12)
-              und im Backend-Log, ob der Server unter dem gleichen Origin läuft und
-              /api/categories erreichbar ist.
+              Schema could not be loaded: {loadError}. Check the browser console (F12)
+              and the backend log to see if the server is running on the same origin and
+              /api/categories is accessible.
             </p>
           )}
 
           <form onSubmit={onSubmit}>
             <div className="field">
               <div className="field-label-row">
-                <label htmlFor="categorySelect">Kategorie</label>
+                <label htmlFor="categorySelect">Category</label>
               </div>
               <select
                 id="categorySelect"
@@ -287,7 +262,7 @@ export default function App() {
               >
                 {categories.map((c) => (
                   <option key={c.code} value={c.code}>
-                    {c.name} ({c.code})
+                    {c.name}
                   </option>
                 ))}
               </select>
@@ -301,7 +276,7 @@ export default function App() {
                 key={attr.code}
               >
                 <div className="field-label-row">
-                  <span className="field-code">{attr.code}</span>
+                 
                   <label htmlFor={`field_${attr.code}`}>{attr.label}</label>
                   {attr.required && <span className="required-marker">*</span>}
                   {attr.unit && <span className="field-unit">({attr.unit})</span>}
@@ -317,12 +292,12 @@ export default function App() {
               </div>
             ))}
 
-            <button type="submit">Material anlegen</button>
+            <button type="submit">Create Material</button>
           </form>
         </section>
 
         <section className="panel panel--terminal">
-          <div className="panel-heading panel-heading--terminal">Antwort</div>
+          <div className="panel-heading panel-heading--terminal">JSON</div>
           <pre className="white">{resultOutput}</pre>
         </section>
       </main>

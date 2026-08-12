@@ -13,16 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-/**
- * DER generische Validator. Er kennt KEIN einziges konkretes Attribut
- * (kein "if code.equals(gasPressureBar)"), sondern liest ausschliesslich
- * aus den category_attributes / attribute_definitions, welche Regeln
- * gelten. Neues Attribut = neue Zeile in der DB, NICHT neuer Code hier.
- *
- * Gleichzeitig ist das Backend die Source of Truth: das Frontend darf
- * Felder aus Komfortgruenden verstecken/pruefen, aber jede Anfrage wird
- * hier nochmal vollstaendig geprueft, bevor irgendetwas gespeichert wird.
- */
+
 @Service
 @RequiredArgsConstructor
 public class MaterialValidationService {
@@ -31,14 +22,9 @@ public class MaterialValidationService {
     private final RuleEngine ruleEngine;
 
     /**
-     * Validiert die übergebenen Werte gegen das Schema der Kategorie.
-     *
-     * @return die bereinigte Werte-Map: nur Attribute, die zur Kategorie
-     *         gehoeren UND gemaess visibleWhen tatsaechlich sichtbar sind.
-     *         Werte fuer ausgeblendete/unbekannte Attribute werden verworfen,
-     *         damit keine "toten" Altwerte in der DB landen.
-     * @throws MaterialValidationException wenn Pflichtfelder fehlen oder
-     *         Werte nicht zum Datentyp passen.
+     * Validates the submitted values against the schema of the category.
+     * @return a cleaned map of values that are valid and visible according to the schema and rules
+     * @throws MaterialValidationException if there are validation errors
      */
     public Map<String, Object> validateAndClean(Category category, Map<String, Object> submittedValues) {
         List<CategoryAttribute> schema = categoryAttributeRepository
@@ -52,15 +38,14 @@ public class MaterialValidationService {
         List<ValidationErrorDto> errors = new ArrayList<>();
         Map<String, Object> cleaned = new LinkedHashMap<>();
 
-        // 1) unbekannte Attribute im Request abweisen (Tippfehler etc.)
         for (String submittedCode : submittedValues.keySet()) {
             if (!knownCodes.contains(submittedCode)) {
                 errors.add(new ValidationErrorDto(submittedCode,
-                        "Attribut ist in dieser Kategorie nicht definiert"));
+                        "Attribute is not defined in this category."));
             }
         }
 
-        // 2) jedes Schema-Attribut pruefen
+
         for (CategoryAttribute ca : schema) {
             AttributeDefinition def = ca.getAttributeDefinition();
             String code = def.getCode();
@@ -69,13 +54,12 @@ public class MaterialValidationService {
             Object value = submittedValues.get(code);
 
             if (!visible) {
-                // ausgeblendete Felder werden ignoriert, auch wenn ein Wert mitgeschickt wurde
                 continue;
             }
 
             if (value == null || (value instanceof String s && s.isBlank())) {
                 if (ca.isRequired()) {
-                    errors.add(new ValidationErrorDto(code, "Pflichtfeld '" + def.getLabel() + "' fehlt"));
+                    errors.add(new ValidationErrorDto(code, "Mandatory field '" + def.getLabel() + "' is missing"));
                 }
                 continue;
             }
@@ -100,21 +84,21 @@ public class MaterialValidationService {
         return switch (def.getDataType()) {
             case STRING -> (value instanceof String)
                     ? Optional.empty()
-                    : Optional.of("'" + def.getLabel() + "' muss Text sein");
+                    : Optional.of("'" + def.getLabel() + "' has to be a string");
 
             case NUMBER -> (value instanceof Number || isNumericString(value))
                     ? Optional.empty()
-                    : Optional.of("'" + def.getLabel() + "' muss eine Zahl sein");
+                    : Optional.of("'" + def.getLabel() + "' has to be a number");
 
             case BOOLEAN -> (value instanceof Boolean)
                     ? Optional.empty()
-                    : Optional.of("'" + def.getLabel() + "' muss true/false sein");
+                    : Optional.of("'" + def.getLabel() + "' has to be true/false)");
 
             case ENUM -> {
                 List<String> allowed = def.getEnumValues() == null ? List.of() : def.getEnumValues();
                 yield allowed.contains(String.valueOf(value))
                         ? Optional.empty()
-                        : Optional.of("'" + def.getLabel() + "' muss einer von " + allowed + " sein");
+                        : Optional.of("'" + def.getLabel() + "' has to be one of" + allowed);
             }
 
             case DATE -> {
@@ -122,7 +106,7 @@ public class MaterialValidationService {
                     LocalDate.parse(String.valueOf(value));
                     yield Optional.empty();
                 } catch (DateTimeParseException e) {
-                    yield Optional.of("'" + def.getLabel() + "' muss ein Datum im Format YYYY-MM-DD sein");
+                    yield Optional.of("'" + def.getLabel() + "' has to be YYYY-MM-DD form");
                 }
             }
         };

@@ -14,13 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Liest das Schema (welche Attribute gehoeren zu einer Kategorie, in
- * welcher Reihenfolge, mit welchen Regeln) aus attribute_definitions +
- * category_attributes und stellt es als DTO bereit. Dieses DTO ist die
- * einzige Grundlage, die der generische Formular-Renderer im Frontend
- * braucht.
- */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -37,7 +30,7 @@ public class SchemaService {
 
     public CategorySchemaDto getSchema(String categoryCode) {
         Category category = categoryRepository.findByCode(categoryCode)
-                .orElseThrow(() -> new EntityNotFoundException("Kategorie nicht gefunden: " + categoryCode));
+                .orElseThrow(() -> new EntityNotFoundException("Category not found " + categoryCode));
 
         List<AttributeSchemaDto> attributes = categoryAttributeRepository
                 .findByCategoryIdOrderBySortOrderAsc(category.getId())

@@ -1,66 +1,55 @@
 -- =====================================================================
--- SEED-DATEN / ZENTRALE ERWEITERUNGSSTELLE
--- =====================================================================
--- Um ein neues Attribut hinzuzufuegen:
---   1) INSERT INTO attribute_definitions (...)   -- einmal global definieren
---   2) INSERT INTO category_attributes (...)      -- der/den Kategorie(n) zuordnen
--- Um eine neue Kategorie hinzuzufuegen:
---   1) INSERT INTO categories (...)
---   2) INSERT INTO category_attributes (...)      -- vorhandene Attribute zuordnen
---
--- Kein Java-/TypeScript-Code, kein Redeploy noetig - nur eine neue
--- Flyway-Migration (z.B. V3__add_attribute_x.sql) mit weiteren INSERTs
--- nach diesem Muster.
+-- SEED DATA
 -- =====================================================================
 
--- Kategorie fuer den Prototyp
+-- Categories: PHYSICALLY
 INSERT INTO categories (code, name) VALUES
-    ('CHEMICAL', 'Chemikalien');
+    ('PHYSICALLY', 'Physically');
 
 -- ---------------------------------------------------------------------
--- 1) Globale Attribut-Definitionen (jedes Attribut existiert nur EINMAL)
+-- 1) Global Attribut Definitions
 -- ---------------------------------------------------------------------
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values) VALUES
     ('materialName',
-     'Materialname',
-     'Bezeichnung des Materials',
+     'Material name',
+      Null,
      'STRING',
      NULL,
      NULL),
 
-    ('physicalState',
-     'Aggregatzustand',
-     'Aggregatzustand des Materials bei Standardbedingungen',
+    ('stateOfMatter',
+     'State of matter',
+     'Material`s State of matter',
      'ENUM',
      NULL,
      '["SOLID", "LIQUID", "GAS"]'::jsonb),
 
-    ('gasPressureBar',
-     'Gasdruck',
-     'Druck des Gases in bar - nur relevant, wenn Aggregatzustand = GAS',
+    ('gasPressure',
+     'Gas Pressure',
+     NULL,
      'NUMBER',
      'bar',
      NULL);
 
 -- ---------------------------------------------------------------------
--- 2) Zuordnung der Attribute zur Kategorie CHEMICAL
+-- 2) Physically Category Attributes
 -- ---------------------------------------------------------------------
 
--- materialName: immer sichtbar, immer Pflichtfeld
+-- materialName:
 INSERT INTO category_attributes (category_id, attribute_definition_id, required, sort_order, visible_when)
 SELECT c.id, a.id, true, 10, NULL
 FROM categories c, attribute_definitions a
-WHERE c.code = 'CHEMICAL' AND a.code = 'materialName';
+WHERE c.code = 'PHYSICALLY' AND a.code = 'materialName';
 
--- physicalState: immer sichtbar, immer Pflichtfeld
+-- stateOfMatter:
 INSERT INTO category_attributes (category_id, attribute_definition_id, required, sort_order, visible_when)
 SELECT c.id, a.id, true, 20, NULL
 FROM categories c, attribute_definitions a
-WHERE c.code = 'CHEMICAL' AND a.code = 'physicalState';
+WHERE c.code = 'PHYSICALLY' AND a.code = 'stateOfMatter';
 
--- gasPressureBar: nur sichtbar (und nur dann Pflichtfeld), wenn physicalState = GAS
+-- gasPressureBar:
 INSERT INTO category_attributes (category_id, attribute_definition_id, required, sort_order, visible_when)
 SELECT c.id, a.id, true, 30,
-       '{"attribute": "physicalState", "operator": "EQUALS", "value": "GAS"}'::jsonb
+       '{"attribute": "stateOfMatter", "operator": "EQUALS", "value": "GAS"}'::jsonb
 FROM categories c, attribute_definitions a
-WHERE c.code = 'CHEMICAL' AND a.code = 'gasPressureBar';
+WHERE c.code = 'PHYSICALLY' AND a.code = 'gasPressure';

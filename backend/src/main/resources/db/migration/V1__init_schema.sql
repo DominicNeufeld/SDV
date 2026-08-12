@@ -1,33 +1,30 @@
 -- =====================================================================
--- Globale Attribut-Definitionen: JEDES Attribut existiert genau EINMAL,
--- unabhaengig davon, wie viele Kategorien es benutzen.
+-- Global Attribut Definitions
 -- =====================================================================
 CREATE TABLE attribute_definitions (
     id            BIGSERIAL PRIMARY KEY,
-    code          VARCHAR(100) NOT NULL UNIQUE,      -- z.B. "gasPressureBar"
-    label         VARCHAR(255) NOT NULL,             -- Anzeigename fuer das Formular
+    code          VARCHAR(100) NOT NULL UNIQUE,    
+    label         VARCHAR(255) NOT NULL,             -- Name of the Form
     description   VARCHAR(1000),
     data_type     VARCHAR(20)  NOT NULL,              -- STRING, NUMBER, BOOLEAN, ENUM, DATE
-    unit          VARCHAR(50),                        -- z.B. "bar", "kg" (optional)
-    enum_values   JSONB,                               -- nur relevant bei data_type = ENUM
+    unit          VARCHAR(50),                        -- e.x "bar", "kg" 
+    enum_values   JSONB,                              
     created_at    TIMESTAMP NOT NULL DEFAULT now(),
     updated_at    TIMESTAMP NOT NULL DEFAULT now()
 );
 
 -- =====================================================================
--- Materialkategorien
+-- Material Categories
 -- =====================================================================
 CREATE TABLE categories (
     id            BIGSERIAL PRIMARY KEY,
-    code          VARCHAR(100) NOT NULL UNIQUE,       -- z.B. "CHEMICAL"
+    code          VARCHAR(100) NOT NULL UNIQUE,      
     name          VARCHAR(255) NOT NULL,
     created_at    TIMESTAMP NOT NULL DEFAULT now()
 );
 
 -- =====================================================================
--- Zuordnungstabelle: welche Kategorie besitzt welches globale Attribut,
--- und mit welchen kategoriespezifischen Eigenschaften (required, Reihenfolge,
--- Sichtbarkeitsregel).
+-- Material Restrictions / Category Attributes
 -- =====================================================================
 CREATE TABLE category_attributes (
     id                       BIGSERIAL PRIMARY KEY,
@@ -35,9 +32,6 @@ CREATE TABLE category_attributes (
     attribute_definition_id  BIGINT NOT NULL REFERENCES attribute_definitions(id) ON DELETE CASCADE,
     required                 BOOLEAN NOT NULL DEFAULT false,
     sort_order                INT NOT NULL DEFAULT 0,
-    -- Regel, als Daten hinterlegt, z.B.:
-    -- {"attribute": "physicalState", "operator": "EQUALS", "value": "GAS"}
-    -- oder komplex: {"and": [ {...}, {...} ]}
     visible_when              JSONB,
     default_value             VARCHAR(255),
     created_at                 TIMESTAMP NOT NULL DEFAULT now(),
@@ -48,8 +42,7 @@ CREATE TABLE category_attributes (
 CREATE INDEX idx_category_attributes_category ON category_attributes(category_id);
 
 -- =====================================================================
--- Die eigentlichen Materialdatensaetze. Die Werte liegen NICHT als
--- einzelne Spalten vor, sondern als JSONB-Map { attributeCode: wert }.
+-- Material data records
 -- =====================================================================
 CREATE TABLE materials (
     id            BIGSERIAL PRIMARY KEY,

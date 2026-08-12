@@ -7,19 +7,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Generische Regel-Engine. Wertet Regeln aus, die rein als Daten
- * (Map/JSON, siehe {@link com.example.matschema.domain.CategoryAttribute#getVisibleWhen()})
- * hinterlegt sind - es gibt fuer eine konkrete fachliche Regel (z.B.
- * "gasPressureBar nur bei physicalState = GAS") KEINEN eigenen Java-Code.
+ *   null                                            -> always visible
+ *   {"attribute": X, "operator": OP, "value": V}     -> Condition
+ *   {"and": [rule, rule, ...]}                       -> AND
+ *   {"or":  [rule, rule, ...]}                       -> OR
  *
- * Unterstuetzte Regel-Formen:
- *   null                                            -> immer sichtbar (true)
- *   {"attribute": X, "operator": OP, "value": V}     -> Blatt-Bedingung
- *   {"and": [rule, rule, ...]}                       -> Verknuepfung UND
- *   {"or":  [rule, rule, ...]}                       -> Verknuepfung ODER
- *
- * Unterstuetzte Operatoren: EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, IS_NOT_EMPTY.
- * Neuer Operator = neuer case im switch weiter unten (einziger Code-Ort).
+ * EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, IS_NOT_EMPTY.
  */
 @Component
 public class RuleEngine {
@@ -53,11 +46,11 @@ public class RuleEngine {
             case "NOT_IN" -> !(expected instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(actual, v)));
             case "IS_EMPTY" -> actual == null || (actual instanceof String s && s.isBlank());
             case "IS_NOT_EMPTY" -> !(actual == null || (actual instanceof String s && s.isBlank()));
-            default -> throw new IllegalArgumentException("Unbekannter Operator in visibleWhen: " + operator);
+            default -> throw new IllegalArgumentException("Unknown operator in visibleWhen: " + operator);
         };
     }
 
-    /** Vergleicht z.B. String "GAS" mit Enum-Wert "GAS" oder Zahl 1 mit "1" robust. */
+    
     private boolean equalsLoose(Object actual, Object expected) {
         if (actual == null || expected == null) {
             return Objects.equals(actual, expected);

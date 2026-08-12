@@ -9,7 +9,7 @@ public class MaterialValidationException extends RuntimeException {
     private final List<ValidationErrorDto> errors;
 
     public MaterialValidationException(List<ValidationErrorDto> errors) {
-        super("Validierung fehlgeschlagen: " + errors.size() + " Fehler");
+        super("Validation failed: " + errors.size() + " error/s");
         this.errors = errors;
     }
 

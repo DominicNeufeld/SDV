@@ -1,11 +1,11 @@
 :root {
-    --bg: #a3a3a3;
+    --bg: #c1c1c1;
     --surface: #FFFFFF;
     --surface-alt: #F5F8F7;
     --ink: #363636;
     --ink-json: #ffffff;
     --ink-muted: #5C6B65;
-    --border: #D3DBD8;
+    --border: #c1c1c1;
     --accent: #146B5C;
     --accent-soft: #E4F0EC;
     --hazard: #B3261E;
@@ -29,7 +29,9 @@ body {
     background-size: 28px 28px;
     background-position: -1px -1px;
     margin: 0;
-    color: var(-ink);
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
 }
 
 header {
@@ -73,18 +75,20 @@ main {
     flex-direction: column;
     gap: 20px;
     padding: 8px 32px 56px;
-    max-width: 700px;
+    max-width: 100%;
+    width: 800px;
 }
 
 .panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 22px 24px 26px;
-    position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px 26px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* technisches Eckmarken-Motiv, wie auf einer Konstruktionszeichnung */
 .panel::before,
 .panel::after {
     content: "";
@@ -257,7 +261,6 @@ pre#resultOutput {
     margin: 0;
 }
 
-/* Segmented control fuer ENUM-Attribute (ersetzt klassische Radio-Kreise) */
 .radio-group {
     display: flex;
     gap: 6px;
@@ -302,15 +305,14 @@ pre#resultOutput {
     outline-offset: 2px;
 }
 
-/* Checkbox fuer BOOLEAN-Attribute */
+
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: var(--accent);
 }
 
-/* sanftes Ein-/Ausblenden statt hartem display:none, respektiert
-   reduced-motion Praeferenz weiter unten */
+
 .field {
     overflow: hidden;
     max-height: 240px;

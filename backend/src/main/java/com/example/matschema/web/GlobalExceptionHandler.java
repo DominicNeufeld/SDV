@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleValidation(MaterialValidationException ex) {
         List<ValidationErrorDto> errors = ex.getErrors();
         return ResponseEntity.badRequest().body(Map.of(
-                "message", "Validierung fehlgeschlagen",
+                "message", "Validation failed",
                 "errors", errors
         ));
     }
