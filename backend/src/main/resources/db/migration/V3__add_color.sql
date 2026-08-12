@@ -11,6 +11,6 @@ NULL);
 -- 2) PHYSICAL Category Attributes
 -- ---------------------------------------------------------------------
 INSERT INTO category_attributes (category_id, attribute_definition_id, required, sort_order, visible_when)
-SELECT c.id, a.id, true, 25, NULL
+SELECT c.id, a.id, true, 35, NULL
 FROM categories c, attribute_definitions a
 WHERE c.code = 'PHYSICALLY' AND a.code = 'color';
