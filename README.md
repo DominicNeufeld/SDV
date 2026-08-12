@@ -4,18 +4,17 @@ Form for the quick entry of materials.
 
 ## Setup
 
-```bash
+```
+bash
 git clone <https://github.com/DominicNeufeld/SDV.git>
 cd SDV
-
-### Backend
+```
 ```
 gradle wrapper
 ```
 
-## Start Project
-
-```bash
+```
+bash
 docker compose up -d     
 ./gradlew bootRun         
 ```
@@ -60,6 +59,7 @@ Frontend auf `http://localhost:5173`
 
 
 ## Restart/Delete Container
+```
 docker stop matschema-postgres
 docker rm -v matschema-postgres   
 
@@ -81,3 +81,4 @@ cd backend
 rm -rf build                                     
 ./gradlew clean build --refresh-dependencies
 ./gradlew bootRun       
+```
