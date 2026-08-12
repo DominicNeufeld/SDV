@@ -5,5 +5,9 @@ public enum DataType {
     NUMBER,
     BOOLEAN,
     ENUM,
-    DATE
+    DATE,
+    /** Mehrfachauswahl aus enumValues; Wert wird als Array gespeichert statt als Scalar. */
+    MULTI_ENUM,
+    /** Container-Attribut ohne eigenen Wert; besitzt Kind-Attribute (siehe parentAttribute). */
+    GROUP
 }

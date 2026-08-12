@@ -39,6 +39,11 @@ public class CategoryAttribute {
     @Column(name = "visible_when")
     private Map<String, Object> visibleWhen;
 
+    /** Wenn gesetzt, ueberschreibt dies "required": Pflicht nur wenn die Bedingung erfuellt ist. */
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "required_when")
+    private Map<String, Object> requiredWhen;
+
     @Column(name = "default_value")
     private String defaultValue;
 

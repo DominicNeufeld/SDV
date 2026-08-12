@@ -1,10 +1,12 @@
 package com.example.matschema.service;
 
+import com.example.matschema.domain.AttributeDefinition;
 import com.example.matschema.domain.Category;
 import com.example.matschema.domain.CategoryAttribute;
 import com.example.matschema.dto.AttributeSchemaDto;
 import com.example.matschema.dto.CategorySchemaDto;
 import com.example.matschema.dto.CategorySummaryDto;
+import com.example.matschema.repository.AttributeDefinitionRepository;
 import com.example.matschema.repository.CategoryAttributeRepository;
 import com.example.matschema.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +24,7 @@ public class SchemaService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryAttributeRepository categoryAttributeRepository;
+    private final AttributeDefinitionRepository attributeDefinitionRepository;
 
     public List<CategorySummaryDto> listCategories() {
         return categoryRepository.findAll().stream()
@@ -32,16 +36,22 @@ public class SchemaService {
         Category category = categoryRepository.findByCode(categoryCode)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found " + categoryCode));
 
-        List<AttributeSchemaDto> attributes = categoryAttributeRepository
-                .findByCategoryIdOrderBySortOrderAsc(category.getId())
-                .stream()
-                .map(this::toDto)
-                .toList();
+        List<AttributeSchemaDto> attributes = new ArrayList<>();
+
+        for (CategoryAttribute ca : categoryAttributeRepository.findByCategoryIdOrderBySortOrderAsc(category.getId())) {
+            AttributeDefinition def = ca.getAttributeDefinition();
+            attributes.add(toTopLevelDto(ca));
+            // Bei GROUP-Attributen zusaetzlich alle verschachtelten Kind- und
+            // Varianten-Attribute rekursiv einsammeln und flach anhaengen.
+            // Das Frontend baut daraus ueber parentCode/variantOfCode den Baum.
+            attributes.addAll(collectDescendants(def));
+        }
 
         return new CategorySchemaDto(category.getCode(), category.getName(), attributes);
     }
 
-    private AttributeSchemaDto toDto(CategoryAttribute ca) {
+    /** Top-Level-Attribut: direkt einer Kategorie zugeordnet, required/sortOrder/visibleWhen aus category_attributes. */
+    private AttributeSchemaDto toTopLevelDto(CategoryAttribute ca) {
         var def = ca.getAttributeDefinition();
         return new AttributeSchemaDto(
                 def.getCode(),
@@ -53,7 +63,71 @@ public class SchemaService {
                 ca.isRequired(),
                 ca.getSortOrder(),
                 ca.getVisibleWhen(),
-                ca.getDefaultValue()
+                ca.getRequiredWhen(),
+                ca.getDefaultValue(),
+                null,   // parentCode - Top-Level hat keinen Parent
+                def.isRepeatable(),
+                null,   // variantOfCode
+                null    // variantKey
         );
+    }
+
+    /** Direktes Kind eines GROUP-Attributs (normale Verschachtelung, keine Variante). */
+    private AttributeSchemaDto toChildDto(AttributeDefinition def) {
+        return new AttributeSchemaDto(
+                def.getCode(),
+                def.getLabel(),
+                def.getDescription(),
+                def.getDataType(),
+                def.getUnit(),
+                def.getEnumValues(),
+                def.isChildRequired(),
+                def.getChildSortOrder(),
+                def.getChildVisibleWhen(),
+                def.getChildRequiredWhen(),
+                null,   // defaultValue wird fuer verschachtelte Attribute aktuell nicht unterstuetzt
+                def.getParentAttribute().getCode(),
+                def.isRepeatable(),
+                null,   // variantOfCode
+                null    // variantKey
+        );
+    }
+
+    /** Alternative Variante (oneOf) einer GROUP, ausgewaehlt ueber ein Diskriminator-Kind derselben GROUP. */
+    private AttributeSchemaDto toVariantDto(AttributeDefinition def) {
+        return new AttributeSchemaDto(
+                def.getCode(),
+                def.getLabel(),
+                def.getDescription(),
+                def.getDataType(),
+                def.getUnit(),
+                def.getEnumValues(),
+                def.isChildRequired(),
+                def.getChildSortOrder(),
+                def.getChildVisibleWhen(),
+                def.getChildRequiredWhen(),
+                null,
+                null,   // parentCode - wird stattdessen ueber variantOfCode aufgeloest
+                def.isRepeatable(),
+                def.getVariantOf().getCode(),
+                def.getVariantKey()
+        );
+    }
+
+    private List<AttributeSchemaDto> collectDescendants(AttributeDefinition parent) {
+        List<AttributeSchemaDto> result = new ArrayList<>();
+
+        for (AttributeDefinition child : attributeDefinitionRepository
+                .findByParentAttribute_IdOrderByChildSortOrderAsc(parent.getId())) {
+            result.add(toChildDto(child));
+            result.addAll(collectDescendants(child));
+        }
+
+        for (AttributeDefinition variant : attributeDefinitionRepository.findByVariantOf_Id(parent.getId())) {
+            result.add(toVariantDto(variant));
+            result.addAll(collectDescendants(variant));
+        }
+
+        return result;
     }
 }

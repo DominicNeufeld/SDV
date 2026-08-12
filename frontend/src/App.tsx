@@ -1,76 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import "./style.css";
-
-type DataType = "STRING" | "NUMBER" | "BOOLEAN" | "DATE" | "ENUM";
+import type { CategorySchema } from "./schema-form/types";
+import { buildAttributeTree } from "./schema-form/tree";
+import { SchemaFormFields, SchemaFormProvider } from "./schema-form/SchemaForm";
+import { getIn } from "./schema-form/valuePath";
 
 interface Category {
   code: string;
   name: string;
 }
 
-interface Rule {
-  and?: Rule[];
-  or?: Rule[];
-  attribute?: string;
-  operator?: "EQUALS" | "NOT_EQUALS" | "IN" | "NOT_IN" | "IS_EMPTY" | "IS_NOT_EMPTY";
-  value?: unknown;
-}
-
-interface AttributeSchema {
-  code: string;
-  label: string;
-  description?: string;
-  unit?: string;
-  required?: boolean;
-  dataType: DataType;
-  enumValues?: string[];
-  defaultValue?: string;
-  visibleWhen?: Rule | null;
-}
-
-interface CategorySchema {
-  categoryCode: string;
-  attributes: AttributeSchema[];
-}
-
-type FieldValues = Record<string, string | boolean | undefined>;
-
 interface FieldError {
   attribute: string;
   message: string;
-}
-
-function evaluateRule(rule: Rule | null | undefined, values: FieldValues): boolean {
-  if (!rule) return true;
-
-  if (rule.and) {
-    return rule.and.every((r) => evaluateRule(r, values));
-  }
-  if (rule.or) {
-    return rule.or.some((r) => evaluateRule(r, values));
-  }
-
-  const actual = values[rule.attribute ?? ""];
-  const expected = rule.value;
-  const operator = rule.operator || "EQUALS";
-
-  switch (operator) {
-    case "EQUALS":
-      return String(actual ?? "") === String(expected ?? "");
-    case "NOT_EQUALS":
-      return String(actual ?? "") !== String(expected ?? "");
-    case "IN":
-      return Array.isArray(expected) && expected.map(String).includes(String(actual));
-    case "NOT_IN":
-      return !(Array.isArray(expected) && expected.map(String).includes(String(actual)));
-    case "IS_EMPTY":
-      return actual === undefined || actual === null || actual === "";
-    case "IS_NOT_EMPTY":
-      return !(actual === undefined || actual === null || actual === "");
-    default:
-      console.warn("Unbekannter Operator:", operator);
-      return true;
-  }
 }
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -83,10 +25,14 @@ export default function App() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [schema, setSchema] = useState<CategorySchema | null>(null);
-  const [values, setValues] = useState<FieldValues>({});
+  // values ist jetzt ein verschachtelter Baum (nicht mehr flach), Struktur
+  // ergibt sich aus parentCode/repeatable/variantOfCode im Schema.
+  const [values, setValues] = useState<unknown>({});
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [loadError, setLoadError] = useState<string | null>(null);
   const [resultOutput, setResultOutput] = useState<string>("");
+
+  const tree = useMemo(() => (schema ? buildAttributeTree(schema.attributes) : []), [schema]);
 
   // Kategorien einmalig laden
   useEffect(() => {
@@ -123,19 +69,6 @@ export default function App() {
     })();
   }, [selectedCategory]);
 
-  const visibility = useMemo(() => {
-    if (!schema) return {} as Record<string, boolean>;
-    const result: Record<string, boolean> = {};
-    for (const attr of schema.attributes) {
-      result[attr.code] = evaluateRule(attr.visibleWhen, values);
-    }
-    return result;
-  }, [schema, values]);
-
-  function setFieldValue(code: string, value: string | boolean) {
-    setValues((prev) => ({ ...prev, [code]: value }));
-  }
-
   function clearFieldErrors() {
     setFieldErrors({});
   }
@@ -147,7 +80,7 @@ export default function App() {
 
     const payload = {
       categoryCode: schema.categoryCode,
-      name: String(values["materialName"] ?? ""),
+      name: String(getIn(values, ["materialName"]) ?? ""),
       values,
     };
 
@@ -173,63 +106,6 @@ export default function App() {
     } catch (err) {
       setResultOutput("Fehler: " + err);
     }
-  }
-
-  function renderInput(attr: AttributeSchema) {
-    const id = `field_${attr.code}`;
-
-    if (attr.dataType === "ENUM") {
-      return (
-        <div className="radio-group" id={id}>
-          {(attr.enumValues || []).map((value, index) => {
-            const optionId = `${id}_${index}`;
-            const checked = (values[attr.code] ?? attr.defaultValue) === value;
-            return (
-              <div className="radio-option" key={value}>
-                <input
-                  type="radio"
-                  id={optionId}
-                  name={attr.code}
-                  value={value}
-                  checked={checked}
-                  onChange={() => setFieldValue(attr.code, value)}
-                />
-                <label htmlFor={optionId} className="radio-label">
-                  {value}
-                </label>
-              </div>
-            );
-          })}
-        </div>
-      );
-    }
-
-    if (attr.dataType === "BOOLEAN") {
-      const checked = Boolean(values[attr.code] ?? false);
-      return (
-        <input
-          type="checkbox"
-          id={id}
-          name={attr.code}
-          checked={checked}
-          onChange={(e) => setFieldValue(attr.code, e.target.checked)}
-        />
-      );
-    }
-
-    const inputType = attr.dataType === "NUMBER" ? "number" : attr.dataType === "DATE" ? "date" : "text";
-    const value = (values[attr.code] as string | undefined) ?? attr.defaultValue ?? "";
-
-    return (
-      <input
-        type={inputType}
-        id={id}
-        name={attr.code}
-        step={attr.dataType === "NUMBER" ? "any" : undefined}
-        value={value}
-        onChange={(e) => setFieldValue(attr.code, e.target.value)}
-      />
-    );
   }
 
   return (
@@ -269,28 +145,9 @@ export default function App() {
             </div>
 
 
-            {schema?.attributes.map((attr) => (
-              <div
-                className={`field${visibility[attr.code] ? "" : " hidden"}`}
-                data-attribute-code={attr.code}
-                key={attr.code}
-              >
-                <div className="field-label-row">
-                 
-                  <label htmlFor={`field_${attr.code}`}>{attr.label}</label>
-                  {attr.required && <span className="required-marker">*</span>}
-                  {attr.unit && <span className="field-unit">({attr.unit})</span>}
-                </div>
-
-                {attr.description && <div className="field-description">{attr.description}</div>}
-
-                {renderInput(attr)}
-
-                <div className={`field-error${fieldErrors[attr.code] ? "" : " hidden"}`}>
-                  {fieldErrors[attr.code]}
-                </div>
-              </div>
-            ))}
+            <SchemaFormProvider values={values} onChange={setValues} fieldErrors={fieldErrors}>
+              <SchemaFormFields nodes={tree} />
+            </SchemaFormProvider>
 
             <button type="submit">Create Material</button>
           </form>

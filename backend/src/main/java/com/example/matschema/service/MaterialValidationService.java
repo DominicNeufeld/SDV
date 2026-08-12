@@ -109,6 +109,22 @@ public class MaterialValidationService {
                     yield Optional.of("'" + def.getLabel() + "' has to be YYYY-MM-DD form");
                 }
             }
+
+            case MULTI_ENUM -> {
+                if (!(value instanceof List<?> list)) {
+                    yield Optional.of("'" + def.getLabel() + "' has to be a list of values");
+                }
+                List<String> allowed = def.getEnumValues() == null ? List.of() : def.getEnumValues();
+                boolean allValid = list.stream().allMatch(v -> allowed.contains(String.valueOf(v)));
+                yield allValid ? Optional.empty()
+                        : Optional.of("'" + def.getLabel() + "' has to be a subset of " + allowed);
+            }
+
+            // GROUP-Attribute besitzen selbst keinen Wert (nur Kind-Attribute) und werden
+            // hier noch nicht flach validiert - verschachtelte/wiederholte Werte werden
+            // aktuell durchgereicht, ohne Typprüfung. TODO: rekursive Validierung ergänzen,
+            // sobald das Speichern verschachtelter Werte implementiert ist.
+            case GROUP -> Optional.empty();
         };
     }
 

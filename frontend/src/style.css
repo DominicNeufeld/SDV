@@ -20,6 +20,11 @@
 
 * { box-sizing: border-box; }
 
+html,
+body {
+    min-height: 100%;
+    overflow-y: auto;
+}
 body {
     font-family: var(--font-sans);
     background: var(--bg);
@@ -135,7 +140,7 @@ select#categorySelect {
 
 .field {
     padding: 16px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); 
 }
 
 .field:first-child { padding-top: 0; }
@@ -314,10 +319,8 @@ input[type="checkbox"] {
 
 
 .field {
-    overflow: hidden;
-    max-height: 240px;
-    opacity: 1;
-    transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
+    overflow: visible;
+    max-height: none;
 }
 
 .field.hidden {
@@ -338,4 +341,77 @@ input[type="checkbox"] {
 
 @media (max-width: 640px) {
     header, main { padding-left: 18px; padding-right: 18px; }
+}
+
+
+.field--group {
+    border: 2px solid var(--border) !important;
+    border-radius: 8px;
+    padding: 14px 16px 16px;
+    margin: 20px 0 0;
+
+    height: auto !important;
+    max-height: none !important;
+
+    overflow: visible !important;
+
+    box-sizing: border-box;
+}
+
+.group-legend {
+    font-weight: 600;
+    font-size: 0.95em;
+    margin-bottom: 10px;
+}
+
+.group-instance {
+    border-left: 2px solid var(--accent);
+    padding-left: 14px;
+    margin-bottom: 14px;
+    position: relative;
+}
+
+.group-instance:last-of-type {
+    margin-bottom: 10px;
+}
+
+.btn-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--hazard);
+    border-radius: 6px;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.btn-add {
+    border: 1px dashed var(--accent);
+    background: transparent;
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.btn-add:hover {
+    background: var(--accent-soft);
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
