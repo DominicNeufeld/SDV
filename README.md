@@ -40,7 +40,7 @@ npm install
 npm run dev
 ```
 
-Frontend auf `http://localhost:5173`
+Frontend: `http://localhost:5173`
 
 ## Add a new Attribut
 
