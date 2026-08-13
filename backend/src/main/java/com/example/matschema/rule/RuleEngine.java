@@ -7,12 +7,18 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *   null                                            -> always visible
- *   {"attribute": X, "operator": OP, "value": V}     -> Condition
- *   {"and": [rule, rule, ...]}                       -> AND
- *   {"or":  [rule, rule, ...]}                       -> OR
+ * null -> always visible
+ * {"attribute": X, "operator": OP, "value": V} -> Condition
+ * {"and": [rule, rule, ...]} -> AND
+ * {"or": [rule, rule, ...]} -> OR
  *
- * EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, IS_NOT_EMPTY.
+ * EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, IS_NOT_EMPTY, CONTAINS,
+ * NOT_CONTAINS.
+ *
+ * CONTAINS / NOT_CONTAINS: fuer MULTI_ENUM-Felder (Mehrfachauswahl). Prueft,
+ * ob "value" als Element in der Werteliste des Attributs enthalten ist -
+ * im Unterschied zu EQUALS/IN, die den Gesamtwert vergleichen und bei einer
+ * Liste als "actual" nie sinnvoll matchen.
  */
 @Component
 public class RuleEngine {
@@ -44,13 +50,28 @@ public class RuleEngine {
             case "NOT_EQUALS" -> !equalsLoose(actual, expected);
             case "IN" -> expected instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(actual, v));
             case "NOT_IN" -> !(expected instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(actual, v)));
-            case "IS_EMPTY" -> actual == null || (actual instanceof String s && s.isBlank());
-            case "IS_NOT_EMPTY" -> !(actual == null || (actual instanceof String s && s.isBlank()));
+            case "IS_EMPTY" -> isEmptyValue(actual);
+            case "IS_NOT_EMPTY" -> !isEmptyValue(actual);
+            case "CONTAINS" -> actual instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(v, expected));
+            case "NOT_CONTAINS" ->
+                !(actual instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(v, expected)));
             default -> throw new IllegalArgumentException("Unknown operator in visibleWhen: " + operator);
         };
     }
 
-    
+    private boolean isEmptyValue(Object actual) {
+        if (actual == null) {
+            return true;
+        }
+        if (actual instanceof String s) {
+            return s.isBlank();
+        }
+        if (actual instanceof List<?> list) {
+            return list.isEmpty();
+        }
+        return false;
+    }
+
     private boolean equalsLoose(Object actual, Object expected) {
         if (actual == null || expected == null) {
             return Objects.equals(actual, expected);

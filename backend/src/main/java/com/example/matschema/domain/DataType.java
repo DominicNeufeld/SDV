@@ -8,6 +8,8 @@ public enum DataType {
     DATE,
     /** Mehrfachauswahl aus enumValues; Wert wird als Array gespeichert statt als Scalar. */
     MULTI_ENUM,
+    /** Zahl + Einheit als EIN Leaf-Attribut, Wert = {"value": ..., "unit": ...}. */
+    QUANTITY,
     /** Container-Attribut ohne eigenen Wert; besitzt Kind-Attribute (siehe parentAttribute). */
     GROUP
 }
