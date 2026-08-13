@@ -163,7 +163,7 @@ select#categorySelect {
     font-size: 0.95em;
     background: var(--surface-alt);
     color: var(--ink);
-    height: 30px;
+    height: 50px;
 }
 
 .field {
