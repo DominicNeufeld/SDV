@@ -1,13 +1,3 @@
--- =====================================================================
--- V9__extend_sample_components.sql
--- =====================================================================
--- Erweitert die in V6 angelegte "sampleComponents"-Gruppe (bereits an
--- PHYSICALLY gebunden, is_repeatable=true) um die restlichen Felder aus
--- schema.json: componentCASNumber, componentMaterialDataSheet,
--- componentAdditionalFeatures, sampleCharacteristics{phaseOfMatter,
--- materialType{...}, materialProperties{...}}.
--- =====================================================================
-
 WITH sample_components AS (
     SELECT id FROM attribute_definitions WHERE code = 'sampleComponents'
 ),
@@ -39,7 +29,7 @@ comp_additional_features AS (
 ),
 
 -- ---------------------------------------------------------------------
--- sampleCharacteristics: verschachtelte GROUP unter sampleComponents
+-- sampleCharacteristics
 -- ---------------------------------------------------------------------
 sample_characteristics AS (
     INSERT INTO attribute_definitions

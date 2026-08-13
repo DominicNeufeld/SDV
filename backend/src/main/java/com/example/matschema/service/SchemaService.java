@@ -41,16 +41,12 @@ public class SchemaService {
         for (CategoryAttribute ca : categoryAttributeRepository.findByCategoryIdOrderBySortOrderAsc(category.getId())) {
             AttributeDefinition def = ca.getAttributeDefinition();
             attributes.add(toTopLevelDto(ca));
-            // Bei GROUP-Attributen zusaetzlich alle verschachtelten Kind- und
-            // Varianten-Attribute rekursiv einsammeln und flach anhaengen.
-            // Das Frontend baut daraus ueber parentCode/variantOfCode den Baum.
             attributes.addAll(collectDescendants(def));
         }
 
         return new CategorySchemaDto(category.getCode(), category.getName(), attributes);
     }
 
-    /** Top-Level-Attribut: direkt einer Kategorie zugeordnet, required/sortOrder/visibleWhen aus category_attributes. */
     private AttributeSchemaDto toTopLevelDto(CategoryAttribute ca) {
         var def = ca.getAttributeDefinition();
         return new AttributeSchemaDto(
@@ -65,14 +61,14 @@ public class SchemaService {
                 ca.getVisibleWhen(),
                 ca.getRequiredWhen(),
                 ca.getDefaultValue(),
-                null,   // parentCode - Top-Level hat keinen Parent
+                null,   
                 def.isRepeatable(),
-                null,   // variantOfCode
-                null    // variantKey
+                null,   
+                null    
         );
     }
 
-    /** Direktes Kind eines GROUP-Attributs (normale Verschachtelung, keine Variante). */
+
     private AttributeSchemaDto toChildDto(AttributeDefinition def) {
         return new AttributeSchemaDto(
                 def.getCode(),
@@ -85,15 +81,14 @@ public class SchemaService {
                 def.getChildSortOrder(),
                 def.getChildVisibleWhen(),
                 def.getChildRequiredWhen(),
-                null,   // defaultValue wird fuer verschachtelte Attribute aktuell nicht unterstuetzt
+                null,   
                 def.getParentAttribute().getCode(),
                 def.isRepeatable(),
-                null,   // variantOfCode
-                null    // variantKey
+                null, 
+                null   
         );
     }
 
-    /** Alternative Variante (oneOf) einer GROUP, ausgewaehlt ueber ein Diskriminator-Kind derselben GROUP. */
     private AttributeSchemaDto toVariantDto(AttributeDefinition def) {
         return new AttributeSchemaDto(
                 def.getCode(),
@@ -107,7 +102,7 @@ public class SchemaService {
                 def.getChildVisibleWhen(),
                 def.getChildRequiredWhen(),
                 null,
-                null,   // parentCode - wird stattdessen ueber variantOfCode aufgeloest
+                null,   
                 def.isRepeatable(),
                 def.getVariantOf().getCode(),
                 def.getVariantKey()

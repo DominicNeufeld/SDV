@@ -1,24 +1,4 @@
--- =====================================================================
--- V11__add_features_of_interest.sql
--- =====================================================================
--- featuresOfInterest: functionalTest, defects, interfaces, dominantStructures
--- (9 Untergruppen: reinforcementStructures, clusters, alignedStructures,
--- grains, lamellarStructures, particles, porousStructures,
--- crystalStructures, nanostructures{nanoparticles, nanowires, nanosheets}).
---
--- Ab hier: einfachere, flache INSERT-Statements statt CTE-Ketten (jede
--- Zeile referenziert ihren Parent per WHERE code = '...', da Flyway alle
--- Statements einer Datei sequentiell in EINER Transaktion ausfuehrt -
--- vorherige INSERTs sind fuer nachfolgende Statements bereits sichtbar).
---
--- Hinweis: "specifiedElements" ist im Original ein Array aus freiem Text
--- ohne enum (Tag-Liste). Dafuer gibt es aktuell keinen eigenen Datentyp -
--- als STRING (kommagetrennt) abgebildet.
--- =====================================================================
 
--- ---------------------------------------------------------------------
--- Top-Level: featuresOfInterest
--- ---------------------------------------------------------------------
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
 VALUES ('featuresOfInterest', 'Features of Interest', NULL, 'GROUP', NULL, NULL);
 
@@ -77,7 +57,7 @@ SELECT 'interfacesComment', 'Comment', NULL, 'STRING', NULL, NULL, p.id, false, 
 FROM attribute_definitions p WHERE p.code = 'interfaces';
 
 -- ---------------------------------------------------------------------
--- dominantStructures (Container fuer die 9 Untergruppen)
+-- dominantStructures 
 -- ---------------------------------------------------------------------
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
 SELECT 'dominantStructures', 'Dominant Structures', NULL, 'GROUP', NULL, NULL, p.id, false, 40

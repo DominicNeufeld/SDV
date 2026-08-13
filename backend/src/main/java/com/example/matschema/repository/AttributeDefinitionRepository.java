@@ -9,9 +9,7 @@ import java.util.Optional;
 public interface AttributeDefinitionRepository extends JpaRepository<AttributeDefinition, Long> {
     Optional<AttributeDefinition> findByCode(String code);
 
-    /** Direkte Kind-Attribute einer GROUP (normale Verschachtelung, keine Varianten). */
     List<AttributeDefinition> findByParentAttribute_IdOrderByChildSortOrderAsc(Long parentAttributeId);
 
-    /** Alternative Varianten (oneOf) einer GROUP. */
     List<AttributeDefinition> findByVariantOf_Id(Long variantOfAttributeId);
 }

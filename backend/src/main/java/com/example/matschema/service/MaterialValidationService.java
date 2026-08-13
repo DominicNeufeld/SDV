@@ -120,10 +120,6 @@ public class MaterialValidationService {
                         : Optional.of("'" + def.getLabel() + "' has to be a subset of " + allowed);
             }
 
-            // GROUP-Attribute besitzen selbst keinen Wert (nur Kind-Attribute) und werden
-            // hier noch nicht flach validiert - verschachtelte/wiederholte Werte werden
-            // aktuell durchgereicht, ohne Typprüfung. TODO: rekursive Validierung ergänzen,
-            // sobald das Speichern verschachtelter Werte implementiert ist.
             case GROUP -> Optional.empty();
 
             case QUANTITY -> {

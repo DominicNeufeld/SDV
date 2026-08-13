@@ -17,13 +17,13 @@ public record AttributeSchemaDto(
         Map<String, Object> visibleWhen,
         Map<String, Object> requiredWhen,
         String defaultValue,
-        /** Code des Eltern-GROUP-Attributs, falls dieses Attribut verschachtelt ist. Sonst null. */
+
         String parentCode,
-        /** Nur bei dataType == GROUP relevant: kann die Gruppe mehrfach vorkommen (Array)? */
+
         boolean repeatable,
-        /** Code der GROUP, deren Variante dieses Attribut ist (oneOf). Sonst null. */
+
         String variantOfCode,
-        /** Schluessel dieser Variante, z.B. "cartesian". Nur gesetzt wenn variantOfCode != null. */
+
         String variantKey
 ) {
 }

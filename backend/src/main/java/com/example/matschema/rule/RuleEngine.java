@@ -6,20 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * null -> always visible
- * {"attribute": X, "operator": OP, "value": V} -> Condition
- * {"and": [rule, rule, ...]} -> AND
- * {"or": [rule, rule, ...]} -> OR
- *
- * EQUALS, NOT_EQUALS, IN, NOT_IN, IS_EMPTY, IS_NOT_EMPTY, CONTAINS,
- * NOT_CONTAINS.
- *
- * CONTAINS / NOT_CONTAINS: fuer MULTI_ENUM-Felder (Mehrfachauswahl). Prueft,
- * ob "value" als Element in der Werteliste des Attributs enthalten ist -
- * im Unterschied zu EQUALS/IN, die den Gesamtwert vergleichen und bei einer
- * Liste als "actual" nie sinnvoll matchen.
- */
 @Component
 public class RuleEngine {
 
@@ -39,7 +25,6 @@ public class RuleEngine {
             return subRules.stream().anyMatch(r -> evaluate(r, currentValues));
         }
 
-        // Blatt-Bedingung: {"attribute": ..., "operator": ..., "value": ...}
         String attribute = (String) rule.get("attribute");
         String operator = (String) rule.getOrDefault("operator", "EQUALS");
         Object expected = rule.get("value");

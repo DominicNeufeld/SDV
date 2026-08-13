@@ -1,12 +1,3 @@
--- =====================================================================
--- V10__add_sample_characterization.sql
--- =====================================================================
--- sampleCharacterization: gleiche Struktur wie sampleCharacteristics
--- (V9), aber fuer das gesamte Sample statt pro Komponente. Codes werden
--- mit "char" praefixiert, da attribute_definitions.code global eindeutig
--- sein muss und phaseOfMatter/materialType/... in V9 bereits vergeben sind.
--- =====================================================================
-
 WITH sample_characterization AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
     VALUES ('sampleCharacterization', 'Sample Characterization', NULL, 'GROUP', NULL, NULL)
