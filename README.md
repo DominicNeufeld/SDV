@@ -9,17 +9,7 @@ bash
 git clone <https://github.com/DominicNeufeld/SDV.git>
 cd SDV
 ```
-```
-gradle wrapper
-```
 
-```
-bash
-docker compose up -d     
-./gradlew bootRun         
-```
-
-→ `http://localhost:8080`
 
 
 ## Starting Server
@@ -36,6 +26,7 @@ Backend: `http://localhost:8080`
 ### Frontend
 ```bash
 cd SDV/frontend
+rm -rf node_modules package-lock.json
 npm install  
 npm run dev
 ```
