@@ -3,6 +3,7 @@ import "./style.css";
 import type { CategorySchema } from "./schema-form/types";
 import { buildAttributeTree } from "./schema-form/tree";
 import { SchemaFormFields, SchemaFormProvider } from "./schema-form/SchemaForm";
+import { SchemaFormNav } from "./schema-form/SchemaFormNav";
 import { getIn } from "./schema-form/valuePath";
 
 interface Category {
@@ -32,7 +33,6 @@ export default function App() {
   const [resultOutput, setResultOutput] = useState<string>("");
 
   const tree = useMemo(() => (schema ? buildAttributeTree(schema.attributes) : []), [schema]);
-
 
   useEffect(() => {
     (async () => {
@@ -113,43 +113,46 @@ export default function App() {
       </header>
 
       <main>
-        <section className="panel">
-          <div className="panel-heading">Form</div>
+        <div className="layout-row">
+          <SchemaFormNav nodes={tree} />
 
-          {loadError && (
-            <p style={{ color: "#c0392b" }}>
-              Schema could not be loaded: {loadError}. Check the browser console (F12)
-              and the backend log to see if the server is running on the same origin and
-              /api/categories is accessible.
-            </p>
-          )}
+          <section className="panel panel--form">
+            <div className="panel-heading">Form</div>
 
-          <form onSubmit={onSubmit}>
-            <div className="field">
-              <div className="field-label-row">
-                <label htmlFor="categorySelect">Category</label>
+            {loadError && (
+              <p style={{ color: "#c0392b" }}>
+                Schema could not be loaded: {loadError}. Check the browser console (F12)
+                and the backend log to see if the server is running on the same origin and
+                /api/categories is accessible.
+              </p>
+            )}
+
+            <form onSubmit={onSubmit}>
+              <div className="field">
+                <div className="field-label-row">
+                  <label htmlFor="categorySelect">Category</label>
+                </div>
+                <select
+                  id="categorySelect"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  {categories.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <select
-                id="categorySelect"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                {categories.map((c) => (
-                  <option key={c.code} value={c.code}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
 
+              <SchemaFormProvider values={values} onChange={setValues} fieldErrors={fieldErrors}>
+                <SchemaFormFields nodes={tree} />
+              </SchemaFormProvider>
 
-            <SchemaFormProvider values={values} onChange={setValues} fieldErrors={fieldErrors}>
-              <SchemaFormFields nodes={tree} />
-            </SchemaFormProvider>
-
-            <button type="submit">Create Material</button>
-          </form>
-        </section>
+              <button type="submit">Create Material</button>
+            </form>
+          </section>
+        </div>
 
         <section className="panel panel--terminal">
           <div className="panel-heading panel-heading--terminal">JSON</div>

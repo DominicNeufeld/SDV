@@ -1,6 +1,8 @@
 -- =====================================================================
 -- SEED DATA
 -- =====================================================================
+-- This is the place to insert new Categories
+
 
 -- Categories: PHYSICALLY
 INSERT INTO categories (code, name) VALUES
