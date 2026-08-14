@@ -292,7 +292,7 @@ function LeafField({
 
   const id = `field_${path.join("_")}`;
 
-  // Backend-Fehler sind aktuell nur für Top-Level-Codes verfügbar.
+
   const error =
     path.length === 1
       ? fieldErrors[attr.code]
