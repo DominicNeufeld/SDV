@@ -1,12 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { AttributeNode, PathSegment } from "./types";
 import { evaluateRule } from "./rules";
 import { findDiscriminatorChild } from "./tree";
+import { buildFlatValues } from "./flatValues";
 import { getIn, removeIndexIn, setIn } from "./valuePath";
 
 
 interface ValuesContextValue {
   values: unknown;
+  flatValues: Record<string, unknown>;
   setValue: (path: PathSegment[], value: unknown) => void;
   removeAt: (path: PathSegment[], index: number) => void;
   fieldErrors: Record<string, string>;
@@ -31,11 +33,15 @@ function useValuesContext(): ValuesContextValue {
 // ---------------------------------------------------------------------
 export function SchemaFormProvider({
   values,
+  tree,
   onChange,
   fieldErrors,
   children,
 }: {
   values: unknown;
+  /** Kompletter Top-Level-Attributbaum, benoetigt um visible_when-Referenzen
+   *  ueber Gruppengrenzen hinweg aufloesen zu koennen (siehe flatValues.ts). */
+  tree: AttributeNode[];
   onChange: (next: unknown) => void;
   fieldErrors: Record<string, string>;
   children: React.ReactNode;
@@ -46,10 +52,13 @@ export function SchemaFormProvider({
   const removeAt = (path: PathSegment[], index: number) =>
     onChange(removeIndexIn(values, path, index));
 
+  const flatValues = useMemo(() => buildFlatValues(tree, values), [tree, values]);
+
   return (
     <ValuesContext.Provider
       value={{
         values,
+        flatValues,
         setValue,
         removeAt,
         fieldErrors,
@@ -87,21 +96,12 @@ function AttributeNodeField({
   node: AttributeNode;
   path: PathSegment[];
 }) {
-  const { values } = useValuesContext();
+  const { flatValues } = useValuesContext();
 
-
-  const siblingScope = path.slice(0, -1);
-
-  const siblingValues =
-    (getIn(values, siblingScope) as Record<string, unknown>) ?? {};
-
-  const visible = evaluateRule(
-    node.attr.visibleWhen,
-    siblingValues
-  );
+  const visible = evaluateRule(node.attr.visibleWhen, flatValues);
 
   const required = node.attr.requiredWhen
-    ? evaluateRule(node.attr.requiredWhen, siblingValues)
+    ? evaluateRule(node.attr.requiredWhen, flatValues)
     : Boolean(node.attr.required);
 
   if (node.attr.dataType === "GROUP") {
@@ -292,7 +292,7 @@ function LeafField({
 
   const id = `field_${path.join("_")}`;
 
-
+  // Backend-Fehler sind aktuell nur für Top-Level-Codes verfügbar.
   const error =
     path.length === 1
       ? fieldErrors[attr.code]

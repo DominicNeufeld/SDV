@@ -12,7 +12,15 @@ export interface Rule {
   and?: Rule[];
   or?: Rule[];
   attribute?: string;
-  operator?: "EQUALS" | "NOT_EQUALS" | "IN" | "NOT_IN" | "IS_EMPTY" | "IS_NOT_EMPTY";
+  operator?:
+    | "EQUALS"
+    | "NOT_EQUALS"
+    | "IN"
+    | "NOT_IN"
+    | "IS_EMPTY"
+    | "IS_NOT_EMPTY"
+    | "CONTAINS"
+    | "NOT_CONTAINS";
   value?: unknown;
 }
 

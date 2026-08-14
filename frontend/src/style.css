@@ -481,6 +481,17 @@ input[type="checkbox"] {
   padding-left: 24px;
   padding-bottom: 12px;
 }
+
+.field--group.hidden {
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    pointer-events: none;
+}
 /* =========================================================
      SIDEBAR 
    ========================================================= */

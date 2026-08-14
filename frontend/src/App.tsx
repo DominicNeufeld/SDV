@@ -145,7 +145,7 @@ export default function App() {
                 </select>
               </div>
 
-              <SchemaFormProvider values={values} onChange={setValues} fieldErrors={fieldErrors}>
+              <SchemaFormProvider values={values} onChange={setValues} fieldErrors={fieldErrors} tree={tree}>
                 <SchemaFormFields nodes={tree} />
               </SchemaFormProvider>
 

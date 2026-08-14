@@ -1,27 +1,3 @@
--- =====================================================================
--- V9__add_sample_description.sql
--- =====================================================================
--- sampleDescription: Beschreibung/Form der Probe (Sample Description aus
--- schema.json). Angehaengt an PHYSICALLY. Alle Felder sind laut Schema
--- optional/recommended, daher required=false auf Gruppen- und Kindebene.
---
--- Annahmen bei den visible_when-Regeln (bitte pruefen):
---   * wire wird nur gezeigt, wenn shapeOptions IN ('filament', 'rod/bar')
---     ist - das sind die einzigen Shape-Optionen, die zu einer
---     Drahtgeometrie passen.
---   * sheet/layer werden NICHT an shapeOptions gekoppelt, da kein
---     shapeOptions-Wert eindeutig "Blech/Folie/Schicht" bedeutet.
---     Stattdessen blenden sich ihre Detailfelder ueber das jeweils
---     eigene *Type-Feld ("not applicable") selbst aus.
---   * numberOfLayers/interlayerSpacing nur bei layerType = 'multilayer',
---     da "Anzahl Schichten"/"Zwischenschichtabstand" bei Monolayer oder
---     Thin Film keinen Sinn ergeben.
---   * aspectRatio kommt im Schema doppelt vor (sheet + wire); da 'code'
---     global eindeutig sein muss, wurden die Felder zu
---     sheetAspectRatio/wireAspectRatio (und diameter zu wireDiameter)
---     umbenannt.
--- =====================================================================
-
 WITH sample_description AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
     VALUES ('sampleDescription', 'Sample Description', NULL, 'GROUP', NULL, NULL)
@@ -35,9 +11,7 @@ attach_top AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
--- Direkte Kinder von sampleDescription
--- ---------------------------------------------------------------------
+
 child_expiration_date AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -74,7 +48,7 @@ child_material_data_sheet AS (
 ),
 
 -- ---------------------------------------------------------------------
--- sampleVisibleElements: verschachtelte GROUP unter sampleDescription
+-- sampleVisibleElements
 -- ---------------------------------------------------------------------
 sample_visible_elements AS (
     INSERT INTO attribute_definitions
@@ -104,7 +78,7 @@ child_other_visible_elements AS (
 ),
 
 -- ---------------------------------------------------------------------
--- sampleShape: verschachtelte GROUP unter sampleDescription
+-- sampleShape
 -- ---------------------------------------------------------------------
 sample_shape AS (
     INSERT INTO attribute_definitions
