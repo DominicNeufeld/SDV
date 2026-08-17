@@ -149,7 +149,7 @@ export default function App() {
                 <SchemaFormFields nodes={tree} />
               </SchemaFormProvider>
 
-              <button type="submit">Create Material</button>
+              <button type="submit">Create Sample</button>
             </form>
           </section>
         </div>

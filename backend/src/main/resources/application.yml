@@ -6,7 +6,6 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      # Flyway ist Source of Truth fuer das Schema, Hibernate soll es nicht validieren/generieren.
       ddl-auto: none
     show-sql: true
     properties:
@@ -17,8 +16,6 @@ spring:
     locations: classpath:db/migration
 
 server:
-  # Falls Port 8080 bei dir belegt ist: hier aendern oder beim Start
-  # ueberschreiben mit: ./gradlew bootRun --args='--server.port=8081'
   port: 8080
 
 logging:
