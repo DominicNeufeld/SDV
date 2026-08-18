@@ -46,7 +46,7 @@ export function evaluateRule(
     case "NOT_CONTAINS":
       return !(Array.isArray(actual) && actual.map(String).includes(String(expected)));
     default:
-      console.warn("Unbekannter Operator:", operator);
+      console.warn("Unkown Operator:", operator);
       return true;
   }
 }

@@ -21,7 +21,7 @@ function useValuesContext(): ValuesContextValue {
 
   if (!ctx) {
     throw new Error(
-      "SchemaForm-Komponenten muessen innerhalb von <SchemaFormProvider> stehen"
+      "SchemaForm Components have to be in <SchemaFormProvider>"
     );
   }
 
@@ -39,8 +39,7 @@ export function SchemaFormProvider({
   children,
 }: {
   values: unknown;
-  /** Kompletter Top-Level-Attributbaum, benoetigt um visible_when-Referenzen
-   *  ueber Gruppengrenzen hinweg aufloesen zu koennen (siehe flatValues.ts). */
+
   tree: AttributeNode[];
   onChange: (next: unknown) => void;
   fieldErrors: Record<string, string>;
@@ -292,7 +291,7 @@ function LeafField({
 
   const id = `field_${path.join("_")}`;
 
-  // Backend-Fehler sind aktuell nur für Top-Level-Codes verfügbar.
+
   const error =
     path.length === 1
       ? fieldErrors[attr.code]
