@@ -39,12 +39,12 @@ Frontend: `http://localhost:5173`
 2. Schema:
    ```sql
    INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values) VALUES
-       ('meinAttribut', 'Mein Attribut', 'Beschreibung', 'STRING', NULL, NULL);
+       ('myAttribut', 'My Attribut', 'Describtion', 'STRING', NULL, NULL);
 
    INSERT INTO category_attributes (category_id, attribute_definition_id, required, sort_order, visible_when)
    SELECT c.id, a.id, true, 40, NULL
    FROM categories c, attribute_definitions a
-   WHERE c.code = 'CHEMICAL' AND a.code = 'meinAttribut';
+   WHERE c.code = 'PHYSICALLY' AND a.code = 'myAttribut';
    ```
 3. Restart the Backend: `./gradlew bootRun` 
 
