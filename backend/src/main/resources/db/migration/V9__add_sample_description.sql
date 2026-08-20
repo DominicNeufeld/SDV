@@ -47,9 +47,9 @@ child_material_data_sheet AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleVisibleElements
--- ---------------------------------------------------------------------
+
 sample_visible_elements AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -77,9 +77,9 @@ child_other_visible_elements AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleShape
--- ---------------------------------------------------------------------
+
 sample_shape AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)

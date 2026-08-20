@@ -1,6 +1,5 @@
 import type { Rule } from "./types";
 
-
 export function evaluateRule(
   rule: Rule | null | undefined,
   flatValues: Record<string, unknown>

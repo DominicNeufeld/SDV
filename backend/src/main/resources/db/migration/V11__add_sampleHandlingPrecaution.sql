@@ -13,9 +13,9 @@ attach_top AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sensitivityAgainst
--- ---------------------------------------------------------------------
+
 sensitivity_against AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -41,9 +41,9 @@ sensitivity_comments AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- safetyInfo
--- ---------------------------------------------------------------------
+
 safety_info AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -69,9 +69,9 @@ safety_comments AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleHandling
--- ---------------------------------------------------------------------
+
 sample_handling AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -158,9 +158,9 @@ handling_additional_notes AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- storageConditions
--- ---------------------------------------------------------------------
+
 storage_conditions AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)

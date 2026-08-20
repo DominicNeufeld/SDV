@@ -10,9 +10,9 @@ attach_top AS (
     WHERE c.code = 'PHYSICALLY'
     RETURNING id
 ),
--- ---------------------------------------------------------------------
+
 -- sampleCarrierType
--- ---------------------------------------------------------------------
+
 sample_carrier_type AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)

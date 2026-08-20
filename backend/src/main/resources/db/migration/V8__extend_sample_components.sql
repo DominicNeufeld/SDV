@@ -28,9 +28,9 @@ comp_additional_features AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleCharacteristics
--- ---------------------------------------------------------------------
+
 sample_characteristics AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)

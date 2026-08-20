@@ -28,9 +28,7 @@ function useValuesContext(): ValuesContextValue {
   return ctx;
 }
 
-// ---------------------------------------------------------------------
 // Provider
-// ---------------------------------------------------------------------
 export function SchemaFormProvider({
   values,
   tree,

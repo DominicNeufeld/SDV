@@ -26,7 +26,7 @@ BEGIN
     VALUES (p_child_prefix || 'ReferenceType', 'Reference Type', 'Type of coordinate system used', 'ENUM',
             '["cartesian", "polar", "none", "other"]'::jsonb, v_group_id, true, 10);
 
-    -- Variante: cartesian
+    -- Variant: cartesian
     INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key)
     VALUES (p_child_prefix || 'CartesianType', 'Cartesian coordinates', 'Cartesian coordinate points', 'GROUP', v_group_id, 'cartesian')
     RETURNING id INTO v_cartesian_id;
@@ -50,7 +50,7 @@ BEGIN
     INSERT INTO attribute_definitions (code, label, description, data_type, parent_attribute_id, child_required, child_sort_order)
     VALUES (p_child_prefix || 'CartesianComments', 'Comments', 'Additional comments about the point', 'STRING', v_cartesian_points_id, false, 30);
 
-    -- Variante: polar
+    -- Variant: polar
     INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key)
     VALUES (p_child_prefix || 'PolarCoordinates', 'Polar coordinates', 'Polar coordinates', 'GROUP', v_group_id, 'polar')
     RETURNING id INTO v_polar_id;
@@ -74,7 +74,7 @@ BEGIN
     INSERT INTO attribute_definitions (code, label, description, data_type, parent_attribute_id, child_required, child_sort_order)
     VALUES (p_child_prefix || 'PolarComments', 'Comments', NULL, 'STRING', v_polar_points_id, false, 30);
 
-    -- Variante: none
+    -- Variant: none
     INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key)
     VALUES (p_child_prefix || 'NotApplicable', 'Not Applicable', 'No coordinate system is applicable', 'GROUP', v_group_id, 'none')
     RETURNING id INTO v_none_id;
@@ -82,7 +82,7 @@ BEGIN
     INSERT INTO attribute_definitions (code, label, description, data_type, parent_attribute_id, child_required, child_sort_order)
     VALUES (p_child_prefix || 'NoneComments', 'Comments', NULL, 'STRING', v_none_id, false, 10);
 
-    -- Variante: other
+    -- Variant: other
     INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key)
     VALUES (p_child_prefix || 'OtherReference', 'Other', 'Other coordinate system', 'GROUP', v_group_id, 'other')
     RETURNING id INTO v_other_id;
@@ -95,7 +95,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ---------------------------------------------------------------------
--- holderReferencing (sort_order 140)
+-- holderReferencing
 -- ---------------------------------------------------------------------
 WITH holder_referencing AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
@@ -144,7 +144,7 @@ build_holder_reference AS (
 SELECT 1 FROM build_sample_position, build_holder_reference;
 
 -- ---------------------------------------------------------------------
--- carrierReferencing (sort_order 150)
+-- carrierReferencing
 -- ---------------------------------------------------------------------
 WITH carrier_referencing AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
@@ -193,7 +193,7 @@ build_carrier_reference AS (
 SELECT 1 FROM build_holder_position, build_carrier_reference;
 
 -- ---------------------------------------------------------------------
--- ROI (sort_order 160)
+-- ROI 
 -- ---------------------------------------------------------------------
 WITH roi AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)

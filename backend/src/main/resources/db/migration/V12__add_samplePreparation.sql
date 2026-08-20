@@ -13,9 +13,9 @@ attach_top AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- researchUser
--- ---------------------------------------------------------------------
+
 research_user AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, is_repeatable)
@@ -24,9 +24,9 @@ research_user AS (
     FROM sample_preparation shp
     RETURNING id
 ),
--- ---------------------------------------------------------------------
+
 -- userName
--- ---------------------------------------------------------------------
+
 user_name as(
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -35,9 +35,9 @@ user_name as(
     FROM research_user ru
     RETURNING id
 ),
--- ---------------------------------------------------------------------
+
 -- userRole
--- ---------------------------------------------------------------------
+
 user_role as(
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -46,9 +46,9 @@ user_role as(
     FROM research_user ru
     RETURNING id
 ),
--- ---------------------------------------------------------------------
+
 -- preparationDate
--- ---------------------------------------------------------------------
+
 preparation_date AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -57,9 +57,9 @@ preparation_date AS (
     FROM sample_preparation shp
     RETURNING id
 ),
--- ---------------------------------------------------------------------
+
 -- preparationMethod
--- ---------------------------------------------------------------------
+
 preparation_method AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, is_repeatable)
@@ -77,7 +77,7 @@ preparation_action AS (
     RETURNING id
 ),
  
--- Variante 1: Not applicable ------------------------------------------
+-- Variant 1: Not applicable
 prep_na AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -94,7 +94,7 @@ prep_na_comments AS (
     RETURNING id
 ),
  
--- Variante 2: Annealing homogenization ----------------------------------
+-- Variant 2: Annealing homogenization 
 prep_annealing AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -129,7 +129,7 @@ prep_annealing_consumables AS (
     RETURNING id
 ),
  
--- Variante 3: Deposition coating ----------------------------------------
+-- Variant 3: Deposition coating 
 prep_deposition AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -164,7 +164,7 @@ prep_deposition_consumables AS (
     RETURNING id
 ),
  
--- Variante 4: Joining -----------------------------------------------------
+-- Variant 4: Joining
 prep_joining AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -199,7 +199,7 @@ prep_joining_consumables AS (
     RETURNING id
 ),
  
--- Variante 5: Mechanical and surface --------------------------------------
+-- Variant 5: Mechanical and surface 
 prep_mechanical AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -234,7 +234,7 @@ prep_mechanical_consumables AS (
     RETURNING id
 ),
  
--- Variante 6: Powder processing --------------------------------------------
+-- Variant 6: Powder processing
 prep_powder AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -269,7 +269,7 @@ prep_powder_consumables AS (
     RETURNING id
 ),
  
--- Variante 7: Cooling -------------------------------------------------------
+-- Variant 7: Cooling
 prep_cooling AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -304,7 +304,7 @@ prep_cooling_consumables AS (
     RETURNING id
 ),
  
--- Variante 8: Reactive --------------------------------------------------
+-- Variant 8: Reactive 
 prep_reactive AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)
@@ -339,7 +339,7 @@ prep_reactive_consumables AS (
     RETURNING id
 ),
  
--- Variante 9: Other
+-- Variant 9: Other
 prep_other AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, child_required, child_sort_order, variant_of_attribute_id, variant_key)

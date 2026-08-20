@@ -1,21 +1,20 @@
--- =====================================================================
+
 -- Global Attribut Definitions
--- =====================================================================
 CREATE TABLE attribute_definitions (
     id            BIGSERIAL PRIMARY KEY,
     code          VARCHAR(100) NOT NULL UNIQUE,    
     label         VARCHAR(255) NOT NULL,             -- Name of the Form
     description   VARCHAR(1000),
-    data_type     VARCHAR(20)  NOT NULL,              -- STRING, NUMBER, BOOLEAN, ENUM, DATE
+    data_type     VARCHAR(20)  NOT NULL,              
     unit          VARCHAR(50),                        -- e.x "bar", "kg" 
     enum_values   JSONB,                              
     created_at    TIMESTAMP NOT NULL DEFAULT now(),
     updated_at    TIMESTAMP NOT NULL DEFAULT now()
 );
 
--- =====================================================================
+
 -- Material Categories
--- =====================================================================
+
 CREATE TABLE categories (
     id            BIGSERIAL PRIMARY KEY,
     code          VARCHAR(100) NOT NULL UNIQUE,      
@@ -23,9 +22,9 @@ CREATE TABLE categories (
     created_at    TIMESTAMP NOT NULL DEFAULT now()
 );
 
--- =====================================================================
+
 -- Material Restrictions / Category Attributes
--- =====================================================================
+
 CREATE TABLE category_attributes (
     id                       BIGSERIAL PRIMARY KEY,
     category_id              BIGINT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
@@ -41,9 +40,9 @@ CREATE TABLE category_attributes (
 
 CREATE INDEX idx_category_attributes_category ON category_attributes(category_id);
 
--- =====================================================================
+ 
 -- Material data records
--- =====================================================================
+
 CREATE TABLE materials (
     id            BIGSERIAL PRIMARY KEY,
     category_id   BIGINT NOT NULL REFERENCES categories(id),

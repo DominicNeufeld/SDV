@@ -1,6 +1,6 @@
--- =====================================================================
+
 -- Sample Reference
--- =====================================================================
+
 
 WITH parent_reference AS (
     INSERT INTO attribute_definitions (
@@ -41,9 +41,9 @@ attach_reference_top AS (
     RETURNING id
 ),
 
--- =====================================================================
+
 -- Discriminator
--- =====================================================================
+
 
 discriminator AS (
     INSERT INTO attribute_definitions (
@@ -240,9 +240,9 @@ comments AS (
 
 SELECT 1;
 
--- =====================================================================
+
 -- POLAR COORDINATES
--- =====================================================================
+
 
 WITH variant_polar AS (
     INSERT INTO attribute_definitions
@@ -384,9 +384,9 @@ polar_comments AS (
 SELECT 1;
 
 
--- =====================================================================
+
 -- NOT APPLICABLE
--- =====================================================================
+
 
 WITH variant_none AS (
     INSERT INTO attribute_definitions
@@ -421,9 +421,9 @@ SELECT
 FROM variant_none n;
 
 
--- =====================================================================
+
 -- OTHER
--- =====================================================================
+
 
 WITH variant_other AS (
     INSERT INTO attribute_definitions

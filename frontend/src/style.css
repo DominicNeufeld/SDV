@@ -492,9 +492,7 @@ input[type="checkbox"] {
     border: 0 !important;
     pointer-events: none;
 }
-/* =========================================================
-     SIDEBAR 
-   ========================================================= */
+/* SIDEBAR */
 
 .layout-row {
   position: relative;

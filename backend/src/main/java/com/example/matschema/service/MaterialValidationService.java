@@ -128,7 +128,7 @@ public class MaterialValidationService {
                 }
                 Object numeric = ((Map<?, ?>) value).get("value");
                 if (numeric == null || numeric.toString().isBlank()) {
-                    yield Optional.empty(); // beide Felder optional, nur Format pruefen falls vorhanden
+                    yield Optional.empty();
                 }
                 try {
                     Double.parseDouble(numeric.toString());

@@ -94,9 +94,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- ---------------------------------------------------------------------
+
 -- holderReferencing
--- ---------------------------------------------------------------------
+
 WITH holder_referencing AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
     VALUES ('holderReferencing', 'Holder Referencing', NULL, 'GROUP', NULL, NULL)
@@ -143,9 +143,9 @@ build_holder_reference AS (
 )
 SELECT 1 FROM build_sample_position, build_holder_reference;
 
--- ---------------------------------------------------------------------
+
 -- carrierReferencing
--- ---------------------------------------------------------------------
+
 WITH carrier_referencing AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
     VALUES ('carrierReferencing', 'Carrier Referencing', NULL, 'GROUP', NULL, NULL)
@@ -192,9 +192,9 @@ build_carrier_reference AS (
 )
 SELECT 1 FROM build_holder_position, build_carrier_reference;
 
--- ---------------------------------------------------------------------
+
 -- ROI 
--- ---------------------------------------------------------------------
+
 WITH roi AS (
     INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
     VALUES ('ROI', 'ROI', NULL, 'GROUP', NULL, NULL)
