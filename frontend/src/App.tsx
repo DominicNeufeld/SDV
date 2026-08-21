@@ -102,7 +102,7 @@ export default function App() {
 
       setResultOutput(JSON.stringify(body, null, 2));
     } catch (err) {
-      setResultOutput("Fehler: " + err);
+      setResultOutput("Error: " + err);
     }
   }
 

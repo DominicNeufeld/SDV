@@ -9,8 +9,7 @@ WITH parent_reference AS (
         description,
         data_type,
         unit,
-        enum_values,
-        link
+        enum_values
     )
     VALUES (
         'sampleReference',
@@ -18,8 +17,7 @@ WITH parent_reference AS (
         'Coordinates of the sample reference system',
         'GROUP',
         NULL,
-        NULL,
-        'https://matwerk.datamanager.kit.edu/skosmos/SampleDescription'
+        NULL
     )
     RETURNING id
 ),
@@ -56,8 +54,7 @@ discriminator AS (
         enum_values,
         parent_attribute_id,
         child_required,
-        child_sort_order,
-        link
+        child_sort_order
     )
     SELECT
         'referenceType',
@@ -67,8 +64,7 @@ discriminator AS (
         '["cartesian", "polar", "none", "other"]'::jsonb,
         p.id,
         true,
-        10,
-        'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/?clang='
+        10
     FROM parent_reference p
     RETURNING id
 )

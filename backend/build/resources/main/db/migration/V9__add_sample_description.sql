@@ -23,9 +23,9 @@ child_expiration_date AS (
 ),
 child_chemical_formula AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleChemicalFormula', 'Sample Chemical Formula', 'Chemical formula of the sample.',
-           'STRING', NULL, NULL, sd.id, false, 20
+           'STRING', NULL, NULL, sd.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/ChemicalFormula?clang='
     FROM sample_description sd
     RETURNING id
 ),

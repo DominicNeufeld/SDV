@@ -130,7 +130,7 @@ function FieldLink({ href }: { href: string }) {
       title="More Information"
       aria-label="More Information"
     >
-      🔗
+      Info
     </a>
   );
 }

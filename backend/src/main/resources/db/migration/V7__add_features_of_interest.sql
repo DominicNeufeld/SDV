@@ -24,10 +24,10 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'defects', 'Defects', NULL, 'GROUP', NULL, NULL, p.id, false, 20
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
 SELECT 'defectsOptions', 'Defects Options', NULL, 'MULTI_ENUM', NULL,
        '["cracks", "crazes", "inclusions", "pores", "voids", "dislocations", "antisite defects", "interstitial defects", "topological defects", "vacancies", "other (please specify in the comment)"]'::jsonb,
-       p.id, false, 10
+       p.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/MicroStructureFeature?clang='
 FROM attribute_definitions p WHERE p.code = 'defects';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
