@@ -1,11 +1,10 @@
-
 WITH sample_description AS (
     SELECT id FROM attribute_definitions WHERE code = 'sampleDescription'
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleSize
--- ---------------------------------------------------------------------
+
 sample_size AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
@@ -41,9 +40,9 @@ size_z AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleMass 
--- ---------------------------------------------------------------------
+
 sample_mass AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -53,9 +52,9 @@ sample_mass AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
--- sampleVolume: gas, liquid oder powder
--- ---------------------------------------------------------------------
+
+-- sampleVolume
+
 sample_volume AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
@@ -66,9 +65,9 @@ sample_volume AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- gasPressure
--- ---------------------------------------------------------------------
+
 gas_pressure AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
@@ -141,9 +140,9 @@ gas_pressure_qual_value AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleSurfaceRoughness
--- ---------------------------------------------------------------------
+
 surface_roughness AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)

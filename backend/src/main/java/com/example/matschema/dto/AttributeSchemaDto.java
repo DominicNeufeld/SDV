@@ -24,6 +24,8 @@ public record AttributeSchemaDto(
 
         String variantOfCode,
 
-        String variantKey
+        String variantKey,
+
+        String link
 ) {
 }

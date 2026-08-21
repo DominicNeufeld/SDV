@@ -120,6 +120,20 @@ function AttributeNodeField({
     />
   );
 }
+function FieldLink({ href }: { href: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="field-link-icon"
+      title="More Information"
+      aria-label="More Information"
+    >
+      🔗
+    </a>
+  );
+}
 
 function GroupField({
   node,
@@ -144,6 +158,7 @@ function GroupField({
       >
         <div className="group-legend">
           {node.attr.label}
+          {node.attr.link && <FieldLink href={node.attr.link} />}
 
           {node.attr.description && (
             <div className="field-description">
@@ -166,7 +181,7 @@ function GroupField({
           className="btn-add"
           onClick={addItem}
         >
-          + {node.attr.label} hinzufügen
+          + {node.attr.label} add
         </button>
       </div>
     );
@@ -192,6 +207,7 @@ function GroupField({
     >
       <div className="group-legend">
         {node.attr.label}
+        {node.attr.link && <FieldLink href={node.attr.link} />}
 
         {node.attr.description && (
           <div className="field-description">
@@ -240,7 +256,7 @@ function GroupInstance({
           type="button"
           className="btn-remove"
           onClick={onRemove}
-          aria-label="Eintrag entfernen"
+          aria-label="Remove Entry"
         >
           ✕
         </button>
@@ -348,9 +364,10 @@ function LeafField({
               id={`${id}_content`}
               className="optional-field-content"
             >
-              {attr.description && (
+              {(attr.description || attr.link) && (
                 <div className="field-description">
                   {attr.description}
+                  {attr.link && <FieldLink href={attr.link} />}
                 </div>
               )}
 
@@ -385,9 +402,10 @@ function LeafField({
             )}
           </div>
 
-          {attr.description && (
+          {(attr.description || attr.link) && (
             <div className="field-description">
               {attr.description}
+              {attr.link && <FieldLink href={attr.link} />}
             </div>
           )}
 

@@ -11,9 +11,9 @@ attach_top AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
--- sampleName, sampleVendor: direkte Kinder von sampleIdentification
--- ---------------------------------------------------------------------
+
+-- sampleName, sampleVendor
+
 child_sample_name AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -31,9 +31,9 @@ child_sample_vendor AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
--- samplePurpose: verschachtelte GROUP unter sampleIdentification
--- ---------------------------------------------------------------------
+
+-- samplePurpose
+
 sample_purpose AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -63,9 +63,9 @@ child_other_purpose AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
--- sampleID: verschachtelte GROUP unter sampleIdentification
--- ---------------------------------------------------------------------
+
+-- sampleID
+
 sample_id_group AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)

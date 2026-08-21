@@ -1,6 +1,6 @@
--- =====================================================================
+
 -- Sample Reference
--- =====================================================================
+
 
 WITH parent_reference AS (
     INSERT INTO attribute_definitions (
@@ -9,7 +9,8 @@ WITH parent_reference AS (
         description,
         data_type,
         unit,
-        enum_values
+        enum_values,
+        link
     )
     VALUES (
         'sampleReference',
@@ -17,7 +18,8 @@ WITH parent_reference AS (
         'Coordinates of the sample reference system',
         'GROUP',
         NULL,
-        NULL
+        NULL,
+        'https://matwerk.datamanager.kit.edu/skosmos/SampleDescription'
     )
     RETURNING id
 ),
@@ -41,9 +43,9 @@ attach_reference_top AS (
     RETURNING id
 ),
 
--- =====================================================================
+
 -- Discriminator
--- =====================================================================
+
 
 discriminator AS (
     INSERT INTO attribute_definitions (
@@ -54,7 +56,8 @@ discriminator AS (
         enum_values,
         parent_attribute_id,
         child_required,
-        child_sort_order
+        child_sort_order,
+        link
     )
     SELECT
         'referenceType',
@@ -64,7 +67,8 @@ discriminator AS (
         '["cartesian", "polar", "none", "other"]'::jsonb,
         p.id,
         true,
-        10
+        10,
+        'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/?clang='
     FROM parent_reference p
     RETURNING id
 )
@@ -240,9 +244,9 @@ comments AS (
 
 SELECT 1;
 
--- =====================================================================
+
 -- POLAR COORDINATES
--- =====================================================================
+
 
 WITH variant_polar AS (
     INSERT INTO attribute_definitions
@@ -384,9 +388,9 @@ polar_comments AS (
 SELECT 1;
 
 
--- =====================================================================
+
 -- NOT APPLICABLE
--- =====================================================================
+
 
 WITH variant_none AS (
     INSERT INTO attribute_definitions
@@ -421,9 +425,9 @@ SELECT
 FROM variant_none n;
 
 
--- =====================================================================
+
 -- OTHER
--- =====================================================================
+
 
 WITH variant_other AS (
     INSERT INTO attribute_definitions

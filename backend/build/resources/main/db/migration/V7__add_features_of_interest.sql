@@ -1,4 +1,3 @@
-
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values)
 VALUES ('featuresOfInterest', 'Features of Interest', NULL, 'GROUP', NULL, NULL);
 
@@ -7,9 +6,9 @@ SELECT c.id, a.id, false, 90, NULL
 FROM categories c, attribute_definitions a
 WHERE c.code = 'PHYSICALLY' AND a.code = 'featuresOfInterest';
 
--- ---------------------------------------------------------------------
+
 -- functionalTest
--- ---------------------------------------------------------------------
+
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
 SELECT 'functionalTest', 'Functional Test', NULL, 'GROUP', NULL, NULL, p.id, false, 10
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
@@ -18,9 +17,9 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'specifiedElements', 'Specified Elements', 'Comma-separated list.', 'STRING', NULL, NULL, p.id, false, 10
 FROM attribute_definitions p WHERE p.code = 'functionalTest';
 
--- ---------------------------------------------------------------------
+
 -- defects
--- ---------------------------------------------------------------------
+
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
 SELECT 'defects', 'Defects', NULL, 'GROUP', NULL, NULL, p.id, false, 20
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
@@ -36,9 +35,9 @@ SELECT 'defectsComment', 'Comment', NULL, 'STRING', NULL, NULL, p.id, false, 20,
        '{"attribute": "defectsOptions", "operator": "CONTAINS", "value": "other (please specify in the comment)"}'::jsonb
 FROM attribute_definitions p WHERE p.code = 'defects';
 
--- ---------------------------------------------------------------------
+
 -- interfaces
--- ---------------------------------------------------------------------
+
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
 SELECT 'interfaces', 'Interfaces', NULL, 'GROUP', NULL, NULL, p.id, false, 30
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
@@ -56,9 +55,9 @@ SELECT 'interfacesComment', 'Comment', NULL, 'STRING', NULL, NULL, p.id, false, 
        '{"attribute": "interfacesOptions", "operator": "CONTAINS", "value": "other (please specify in the comment)"}'::jsonb
 FROM attribute_definitions p WHERE p.code = 'interfaces';
 
--- ---------------------------------------------------------------------
+
 -- dominantStructures 
--- ---------------------------------------------------------------------
+
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
 SELECT 'dominantStructures', 'Dominant Structures', NULL, 'GROUP', NULL, NULL, p.id, false, 40
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
@@ -212,7 +211,7 @@ SELECT 'crystalScale', 'Scale', NULL, 'ENUM', NULL,
        '{"attribute": "crystallinity", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
 FROM attribute_definitions p WHERE p.code = 'crystalStructures';
 
--- nanostructures (Container fuer nanoparticles / nanowires / nanosheets)
+-- nanostructures 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
 SELECT 'nanostructures', 'Nanostructures', NULL, 'GROUP', NULL, NULL, p.id, false, 90
 FROM attribute_definitions p WHERE p.code = 'dominantStructures';

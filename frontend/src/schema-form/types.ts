@@ -39,6 +39,7 @@ export interface AttributeSchema {
   repeatable?: boolean;
   variantOfCode?: string | null;
   variantKey?: string | null;
+  link?: string | null;
 }
 
 export interface CategorySchema {

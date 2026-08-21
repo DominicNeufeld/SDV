@@ -11,9 +11,9 @@ attach_top AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleHolderType
--- ---------------------------------------------------------------------
+
 sample_holder_type AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -33,9 +33,9 @@ other_holder_type AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
--- sampleHolderSize (GROUP, nicht ENUM!)
--- ---------------------------------------------------------------------
+
+-- sampleHolderSize
+
 sample_holder_size AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -70,9 +70,9 @@ holder_size_z AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- sampleHolderDescription
--- ---------------------------------------------------------------------
+
 sample_holder_description AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -83,9 +83,9 @@ sample_holder_description AS (
     RETURNING id
 ),
 
--- ---------------------------------------------------------------------
+
 -- fixingMethod
--- ---------------------------------------------------------------------
+
 fixing_method AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)

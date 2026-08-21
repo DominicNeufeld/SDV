@@ -64,7 +64,8 @@ public class SchemaService {
                 null,   
                 def.isRepeatable(),
                 null,   
-                null    
+                null   ,
+                def.getLink() 
         );
     }
 
@@ -85,7 +86,8 @@ public class SchemaService {
                 def.getParentAttribute().getCode(),
                 def.isRepeatable(),
                 null, 
-                null   
+                null   ,
+                def.getLink()
         );
     }
 
@@ -105,7 +107,8 @@ public class SchemaService {
                 null,   
                 def.isRepeatable(),
                 def.getVariantOf().getCode(),
-                def.getVariantKey()
+                def.getVariantKey(),
+                def.getLink()
         );
     }
 

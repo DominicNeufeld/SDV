@@ -37,6 +37,9 @@ public class AttributeDefinition {
 
     private String unit;
 
+    @Column(name = "link", length = 500)
+    private String link;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "enum_values")
     private List<String> enumValues;
