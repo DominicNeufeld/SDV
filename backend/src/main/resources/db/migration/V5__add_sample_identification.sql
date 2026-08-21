@@ -68,26 +68,26 @@ child_other_purpose AS (
 
 sample_id_group AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'sampleID', 'Sample ID', NULL, 'GROUP', NULL, NULL, si.id, false, 40
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+    SELECT 'sampleID', 'Sample ID', NULL, 'GROUP', NULL, NULL, si.id, false, 40, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleID?clang='
     FROM sample_identification si
     RETURNING id
 ),
 child_sample_id_value AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleIdValue', 'Sample ID',
            'Identifier of the sample. Naming convention differs by laboratory.',
-           'STRING', NULL, NULL, sig.id, false, 10
+           'STRING', NULL, NULL, sig.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleID?clang='
     FROM sample_id_group sig
     RETURNING id
 ),
 child_sample_id_type AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleIDType', 'Sample ID Type', 'Type of identifier of the sample.', 'ENUM', NULL,
            '["not applicable", "text", "code", "value", "other (please specify in the comment)"]'::jsonb,
-           sig.id, false, 20
+           sig.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleIDType?clang='
     FROM sample_id_group sig
     RETURNING id
 ),
@@ -103,13 +103,13 @@ child_other_id_type AS (
 ),
 child_sample_id_position AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when, link)
     SELECT 'sampleIDPosition', 'Sample ID Position',
            'Position of the printed ID on the sample. Multiple selection allowed.',
            'MULTI_ENUM', NULL,
            '["not applicable", "top", "bottom", "right", "left", "front side", "back side"]'::jsonb,
            sig.id, false, 40,
-           '{"attribute": "sampleIDType", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
+           '{"attribute": "sampleIDType", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleIDPosition?clang='
     FROM sample_id_group sig
     RETURNING id
 )

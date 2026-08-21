@@ -12,18 +12,18 @@ attach_top AS (
 ),
 char_phase_of_matter AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'charPhaseOfMatter', 'Phase of Matter', NULL, 'ENUM', NULL,
            '["not applicable", "solid", "liquid", "gas", "plasma", "mixture"]'::jsonb,
-           scz.id, false, 10
+           scz.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/PhaseOfMatter?clang='
     FROM sample_characterization scz
     RETURNING id
 ),
 char_material_type AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when, link)
     SELECT 'charMaterialType', 'Material Type', NULL, 'GROUP', NULL, NULL, scz.id, false, 20,
-           '{"attribute": "charPhaseOfMatter", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
+           '{"attribute": "charPhaseOfMatter", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/MaterialType?clang='
     FROM sample_characterization scz
     RETURNING id
 ),
@@ -46,9 +46,9 @@ char_other_material_type AS (
 ),
 char_material_properties AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when, link)
     SELECT 'charMaterialProperties', 'Material Properties', NULL, 'GROUP', NULL, NULL, scz.id, false, 30,
-           '{"attribute": "charPhaseOfMatter", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
+           '{"attribute": "charPhaseOfMatter", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/MarerialProperty?clang='
     FROM sample_characterization scz
     RETURNING id
 ),
