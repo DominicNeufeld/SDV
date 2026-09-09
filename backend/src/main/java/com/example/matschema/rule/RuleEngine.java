@@ -17,12 +17,24 @@ public class RuleEngine {
 
         if (rule.containsKey("and")) {
             List<Map<String, Object>> subRules = (List<Map<String, Object>>) rule.get("and");
-            return subRules.stream().allMatch(r -> evaluate(r, currentValues));
+
+            for (Map<String, Object> subRule : subRules) {
+                if (!evaluate(subRule, currentValues)) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         if (rule.containsKey("or")) {
             List<Map<String, Object>> subRules = (List<Map<String, Object>>) rule.get("or");
-            return subRules.stream().anyMatch(r -> evaluate(r, currentValues));
+            for (Map<String, Object> subRule : subRules) {
+                if (evaluate(subRule, currentValues)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         String attribute = (String) rule.get("attribute");

@@ -74,8 +74,8 @@ safety_comments AS (
 
 sample_handling AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'sampleHandling', 'Sample Handling', NULL, 'GROUP', NULL, NULL, shp.id, false, 30
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+    SELECT 'sampleHandling', 'Sample Handling', NULL, 'GROUP', NULL, NULL, shp.id, false, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleHandling?clang='
     FROM sample_handling_precaution shp
     RETURNING id
 ),
@@ -123,10 +123,10 @@ handling_max_humidity AS (
 ),
 gas_atmosphere AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'gasAtmosphere', 'Gas Atmosphere',
            'Type of inert gas required around the sample due e.g. to the presence of a reactive top layer.',
-           'GROUP', NULL, NULL, sh.id, false, 70
+           'GROUP', NULL, NULL, sh.id, false, 70, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/GasAtmosphere?clang='
     FROM sample_handling sh
     RETURNING id
 ),
@@ -163,35 +163,35 @@ handling_additional_notes AS (
 
 storage_conditions AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'storageConditions', 'Storage Conditions', NULL, 'GROUP', NULL, NULL, shp.id, false, 40
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+    SELECT 'storageConditions', 'Storage Conditions', NULL, 'GROUP', NULL, NULL, shp.id, false, 40, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageCondition?clang='
     FROM sample_handling_precaution shp
     RETURNING id
 ),
 storage_min_temperature AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'minStorageTemperature', 'Min. Storage Temperature', 'Minimal temperature at which the sample should be stored.',
-           'QUANTITY', NULL, NULL, sc.id, false, 10
+           'QUANTITY', NULL, NULL, sc.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageTemperature?clang='
     FROM storage_conditions sc
     RETURNING id
 ),
 storage_max_temperature AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'maxStorageTemperature', 'Max. Storage Temperature', 'Maximal temperature at which the sample should be stored.',
-           'QUANTITY', NULL, NULL, sc.id, false, 20
+           'QUANTITY', NULL, NULL, sc.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageTemperature?clang='
     FROM storage_conditions sc
     RETURNING id
 ),
 
--- storagePressure: oneOf-Struktur (Not applicable / quantitative / qualitative)
+-- storagePressure
 storage_pressure AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'storagePressure', 'Storage Pressure',
            'Storage pressure, to be indicated only if different from gas pressure.',
-           'GROUP', NULL, NULL, sc.id, false, 30
+           'GROUP', NULL, NULL, sc.id, false, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StoragePressure?clang='
     FROM storage_conditions sc
     RETURNING id
 ),
@@ -310,9 +310,9 @@ other_storage_gas_atmosphere AS (
 
 storage_equipment AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'storageEquipment', 'Storage Equipment', 'One or more pieces of equipment used for storing the sample.',
-           'GROUP', NULL, NULL, sc.id, false, 70
+           'GROUP', NULL, NULL, sc.id, false, 70, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageEquipment?clang='
     FROM storage_conditions sc
     RETURNING id
 ),

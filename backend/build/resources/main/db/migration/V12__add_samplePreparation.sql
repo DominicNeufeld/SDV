@@ -51,9 +51,9 @@ user_role as(
 
 preparation_date AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'preparationDate', 'Preparation Date', 'Optional) - Date of preparation',
-     'DATE', NULL, NULL, shp.id, false, 20
+     'DATE', NULL, NULL, shp.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/PreparationDate?clang='
     FROM sample_preparation shp
     RETURNING id
 ),

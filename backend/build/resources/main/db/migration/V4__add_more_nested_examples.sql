@@ -83,7 +83,7 @@ cartesian_variant AS (
         description,
         data_type,
         variant_of_attribute_id,
-        variant_key
+        variant_key, link
     )
     SELECT
         'cartesianType',
@@ -91,7 +91,7 @@ cartesian_variant AS (
         'Cartesian coordinate points',
         'GROUP',
         p.id,
-        'cartesian'
+        'cartesian', 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Cartesian?clang='
     FROM parent_reference p
     RETURNING id
 ),
@@ -247,7 +247,7 @@ SELECT 1;
 WITH variant_polar AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type, unit, enum_values,
-         variant_of_attribute_id, variant_key)
+         variant_of_attribute_id, variant_key, link)
     SELECT
         'polarCoordinates',
         'Polar coordinates',
@@ -256,7 +256,7 @@ WITH variant_polar AS (
         NULL,
         NULL,
         p.id,
-        'polar'
+        'polar', 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Polar?clang='
     FROM attribute_definitions p
     WHERE p.code = 'sampleReference'
     RETURNING id

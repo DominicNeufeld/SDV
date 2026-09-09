@@ -15,20 +15,20 @@ attach_top AS (
 
 sample_carrier_type AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleCarrierType', 'Sample Carrier Type', '(Optional) - Type of sample carrier. It may include the substrate, in case it is used as sample carrier.',
            'STRING', NULL,
            NULL,
-           sh.id, false, 10
+           sh.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleCarrierType?clang='
     FROM sample_carrier sh
     RETURNING id
 ),
 sample_carrier_size AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleCarrierSize', 'Sample Carrier Size',
            '(Optional) - Size of the sample carrier. Relevant especially in case of a liquid/gasous sample. Mainly needed to evaluate whether the sample fits a certain measurement. Regardless of the shape, the sample carrier size can be approximated (e.g. the diameter of a cylinder can be indicated as sizeX and sizeY).',
-           'GROUP', NULL, NULL, sh.id, false, 20
+           'GROUP', NULL, NULL, sh.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleCarrierSize?clang='
     FROM sample_carrier sh
     RETURNING id
 ),

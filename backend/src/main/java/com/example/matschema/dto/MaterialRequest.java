@@ -9,5 +9,5 @@ public record MaterialRequest(
         @NotBlank String categoryCode,
         String name,
         @NotNull Map<String, Object> values
-) {
-}
+)
+{}

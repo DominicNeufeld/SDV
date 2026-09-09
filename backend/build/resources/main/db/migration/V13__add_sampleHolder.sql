@@ -16,11 +16,11 @@ attach_top AS (
 
 sample_holder_type AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleHolderType', 'Sample Holder Type', '(Optional) - Type of sample holder.',
            'ENUM', NULL,
            '["Not applicable", "stub", "dish", "cylinder", "glass slide", "TEM grid", "tilting support", "custom holder", "Other (please add in the comments)"]'::jsonb,
-           sh.id, false, 10
+           sh.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleHolderType?clang='
     FROM sample_holder sh
     RETURNING id
 ),
@@ -38,10 +38,10 @@ other_holder_type AS (
 
 sample_holder_size AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleHolderSize', 'Sample Holder Size',
            'Size of the sample holder. Relevant especially in case of a liquid/gaseous sample. Mainly needed to evaluate whether the sample fits a certain measurement. Regardless of the shape, the sample holder size can be approximated (e.g. the diameter of a cylinder can be indicated as sizeX and sizeY).',
-           'GROUP', NULL, NULL, sh.id, false, 30
+           'GROUP', NULL, NULL, sh.id, false, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleHolderSize?clang='
     FROM sample_holder sh
     RETURNING id
 ),

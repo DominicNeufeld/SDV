@@ -27,8 +27,8 @@ BEGIN
             '["cartesian", "polar", "none", "other"]'::jsonb, v_group_id, true, 10);
 
     -- Variant: cartesian
-    INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key)
-    VALUES (p_child_prefix || 'CartesianType', 'Cartesian coordinates', 'Cartesian coordinate points', 'GROUP', v_group_id, 'cartesian')
+    INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key, link)
+    VALUES (p_child_prefix || 'CartesianType', 'Cartesian coordinates', 'Cartesian coordinate points', 'GROUP', v_group_id, 'cartesian', 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Cartesian?clang=')
     RETURNING id INTO v_cartesian_id;
 
     INSERT INTO attribute_definitions (code, label, description, data_type, is_repeatable, parent_attribute_id, child_sort_order)
@@ -51,8 +51,8 @@ BEGIN
     VALUES (p_child_prefix || 'CartesianComments', 'Comments', 'Additional comments about the point', 'STRING', v_cartesian_points_id, false, 30);
 
     -- Variant: polar
-    INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key)
-    VALUES (p_child_prefix || 'PolarCoordinates', 'Polar coordinates', 'Polar coordinates', 'GROUP', v_group_id, 'polar')
+    INSERT INTO attribute_definitions (code, label, description, data_type, variant_of_attribute_id, variant_key, link)
+    VALUES (p_child_prefix || 'PolarCoordinates', 'Polar coordinates', 'Polar coordinates', 'GROUP', v_group_id, 'polar', 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Polar?clang=')
     RETURNING id INTO v_polar_id;
 
     INSERT INTO attribute_definitions (code, label, description, data_type, is_repeatable, parent_attribute_id, child_sort_order)

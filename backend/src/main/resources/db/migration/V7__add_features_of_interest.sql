@@ -232,8 +232,8 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'nanoparticleMaxSize', 'Max. Particle Size', NULL, 'QUANTITY', NULL, NULL, p.id, false, 30
 FROM attribute_definitions p WHERE p.code = 'nanoparticles';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanowires', 'Nanowires', NULL, 'GROUP', NULL, NULL, p.id, false, 20
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+SELECT 'nanowires', 'Nanowires', NULL, 'GROUP', NULL, NULL, p.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Nanowire?clang='
 FROM attribute_definitions p WHERE p.code = 'nanostructures';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -244,8 +244,8 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'nanowireAspectRatio', 'Aspect Ratio', 'Ratio of the length to the diameter.', 'NUMBER', NULL, NULL, p.id, false, 20
 FROM attribute_definitions p WHERE p.code = 'nanowires';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanosheets', 'Nanosheets', NULL, 'GROUP', NULL, NULL, p.id, false, 30
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+SELECT 'nanosheets', 'Nanosheets', NULL, 'GROUP', NULL, NULL, p.id, false, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Nanosheet?clang='
 FROM attribute_definitions p WHERE p.code = 'nanostructures';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)

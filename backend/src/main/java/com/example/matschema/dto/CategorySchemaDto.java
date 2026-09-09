@@ -6,5 +6,5 @@ public record CategorySchemaDto(
         String categoryCode,
         String categoryName,
         List<AttributeSchemaDto> attributes
-) {
-}
+) 
+{}

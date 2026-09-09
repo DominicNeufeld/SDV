@@ -14,10 +14,10 @@ attach_top AS (
 
 child_expiration_date AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'expirationDate', 'Expiration Date',
            'Sample expiration date, if any. Relevant in case of biological samples.',
-           'DATE', NULL, NULL, sd.id, false, 10
+           'DATE', NULL, NULL, sd.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/ExpirationDate?clang='
     FROM sample_description sd
     RETURNING id
 ),
@@ -31,18 +31,18 @@ child_chemical_formula AS (
 ),
 child_cas_number AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleCASNumber', 'Sample CAS Number', 'CAS number of the sample, if known and applicable.',
-           'STRING', NULL, NULL, sd.id, false, 30
+           'STRING', NULL, NULL, sd.id, false, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/CASnumber?clang='
     FROM sample_description sd
     RETURNING id
 ),
 child_material_data_sheet AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleMaterialDataSheet', 'Sample Material Data Sheet',
            'Link to the file describing the composition specification, usually called Material Data Sheet, if available.',
-           'STRING', NULL, NULL, sd.id, false, 40
+           'STRING', NULL, NULL, sd.id, false, 40, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/MaterialDataSheet?clang='
     FROM sample_description sd
     RETURNING id
 ),
@@ -82,8 +82,8 @@ child_other_visible_elements AS (
 
 sample_shape AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'sampleShape', 'Sample Shape', 'Shape of the solid/mixture sample.', 'GROUP', NULL, NULL, sd.id, false, 60
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+    SELECT 'sampleShape', 'Sample Shape', 'Shape of the solid/mixture sample.', 'GROUP', NULL, NULL, sd.id, false, 60, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleShape?clang='
     FROM sample_description sd
     RETURNING id
 ),
@@ -100,8 +100,8 @@ child_shape_options AS (
 -- sheet ----------------------------------------------------------------
 shape_sheet AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'sheet', 'Sheet', NULL, 'GROUP', NULL, NULL, ss.id, false, 20
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+    SELECT 'sheet', 'Sheet', NULL, 'GROUP', NULL, NULL, ss.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Sheet?clang='
     FROM sample_shape ss
     RETURNING id
 ),
@@ -135,17 +135,17 @@ child_sheet_aspect_ratio AS (
 -- layer ------------------------------------------------------------
 shape_layer AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'layer', 'Layer', NULL, 'GROUP', NULL, NULL, ss.id, false, 30
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+    SELECT 'layer', 'Layer', NULL, 'GROUP', NULL, NULL, ss.id, false, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Layer?clang='
     FROM sample_shape ss
     RETURNING id
 ),
 child_layer_type AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'layerType', 'Layer Type', NULL, 'ENUM', NULL,
            '["not applicable", "monolayer", "thin film", "multilayer"]'::jsonb,
-           l.id, false, 10
+           l.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/LayerType?clang='
     FROM shape_layer l
     RETURNING id
 ),

@@ -32,7 +32,7 @@ public class AttributeDefinition {
 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "data_type", nullable = false, length = 20)
+    @Column(name = "data_type", nullable = false, length = 40)
     private DataType dataType;
 
     private String unit;

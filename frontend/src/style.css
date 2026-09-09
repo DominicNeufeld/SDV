@@ -733,21 +733,30 @@ input[type="checkbox"] {
   }
 }
 
-/* Link */
-
 .field-link-icon {
-    display: inline-block;
-    margin-left: 6px;
-    font-size: 0.85em;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    padding: 2px 9px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+
+    color: var(--accent);
+    background: var(--accent-soft);
     text-decoration: none;
-    filter: grayscale(1);
-    opacity: 0.6;
-    transition: opacity 0.15s ease, filter 0.15s ease;
+
     vertical-align: middle;
+    transition: background 0.15s ease, color 0.15s ease;
 }
- 
+
 .field-link-icon:hover,
 .field-link-icon:focus-visible {
-    opacity: 1;
-    filter: none;
+    background: var(--accent);
+    color: white;
+    outline: none;
 }

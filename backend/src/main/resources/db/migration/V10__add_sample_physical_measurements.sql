@@ -45,9 +45,9 @@ size_z AS (
 
 sample_mass AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleMass', 'Sample Mass', 'Mass of the sample.',
-           'QUANTITY', NULL, NULL, sd.id, false, 80
+           'QUANTITY', NULL, NULL, sd.id, false, 80, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleMass?clang='
     FROM sample_description sd
     RETURNING id
 ),
