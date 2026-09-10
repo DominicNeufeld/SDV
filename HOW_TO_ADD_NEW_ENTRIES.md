@@ -18,6 +18,7 @@ New attributes are added in a Flyway SQL migration.
 - `is_repeatable` – allows multiple instances
 - `variant_of_attribute_id` – attribute this is a variant of
 - `variant_key` – name of the variant
+- `link`- Link to the defintion(other Website)
 
 ## Top-Level Attribute
 
