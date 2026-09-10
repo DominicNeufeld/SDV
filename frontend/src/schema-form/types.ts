@@ -40,6 +40,7 @@ export interface AttributeSchema {
   variantOfCode?: string | null;
   variantKey?: string | null;
   link?: string | null;
+  unitOptions?: string[] | null;
 }
 
 export interface CategorySchema {

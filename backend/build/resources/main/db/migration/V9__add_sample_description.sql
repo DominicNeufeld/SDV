@@ -116,8 +116,8 @@ child_sheet_type AS (
 ),
 child_sheet_thickness AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
-    SELECT 'sheetThickness', 'Sheet Thickness', NULL, 'QUANTITY', NULL, NULL, sh.id, false, 20,
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+    SELECT 'sheetThickness', 'Sheet Thickness', NULL, 'QUANTITY', NULL, '["nm", "µm", "mm", "cm"]'::jsonb, NULL, sh.id, false, 20,
            '{"attribute": "sheetType", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
     FROM shape_sheet sh
     RETURNING id
@@ -151,8 +151,8 @@ child_layer_type AS (
 ),
 child_layer_thickness AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
-    SELECT 'layerThickness', 'Layer Thickness', NULL, 'QUANTITY', NULL, NULL, l.id, false, 20,
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+    SELECT 'layerThickness', 'Layer Thickness', NULL, 'QUANTITY', NULL,'["nm", "µm", "mm", "cm"]'::jsonb, NULL, l.id, false, 20,
            '{"attribute": "layerType", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
     FROM shape_layer l
     RETURNING id

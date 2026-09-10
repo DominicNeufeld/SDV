@@ -7,7 +7,7 @@ WITH parents AS (
 ),
 attach_top AS (
     INSERT INTO category_attributes (category_id, attribute_definition_id, required, sort_order, visible_when)
-    SELECT c.id, p.id, true, 160, NULL
+    SELECT c.id, p.id, false, 160, NULL
     FROM categories c, parents p
     WHERE c.code = 'PHYSICALLY'
     RETURNING id

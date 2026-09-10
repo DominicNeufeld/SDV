@@ -760,3 +760,20 @@ input[type="checkbox"] {
     color: white;
     outline: none;
 }
+
+.quantity-group select {
+    flex: 1;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.98em;
+    font-family: var(--font-sans);
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.quantity-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}

@@ -151,9 +151,8 @@ function GroupField({
 
     return (
       <div
-        className={`field field--group${
-          visible ? "" : " hidden"
-        }`}
+        className={`field field--group${visible ? "" : " hidden"
+          }`}
         data-attribute-code={node.attr.code}
       >
         <div className="group-legend">
@@ -200,9 +199,8 @@ function GroupField({
 
   return (
     <div
-      className={`field field--group${
-        visible ? "" : " hidden"
-      }`}
+      className={`field field--group${visible ? "" : " hidden"
+        }`}
       data-attribute-code={node.attr.code}
     >
       <div className="group-legend">
@@ -323,17 +321,16 @@ function LeafField({
     }
   }, [error]);
 
- 
+
   return (
     <div
-      className={`field${
-        visible ? "" : " hidden"
-      }`}
+      className={`field${visible ? "" : " hidden"
+        }`}
       data-attribute-code={attr.code}
     >
       {optional ? (
         <>
-          {}
+          { }
           <button
             type="button"
             className="optional-field-toggle"
@@ -358,7 +355,7 @@ function LeafField({
             )}
           </button>
 
-          {}
+          { }
           {open && (
             <div
               id={`${id}_content`}
@@ -374,9 +371,8 @@ function LeafField({
               {renderInput()}
 
               <div
-                className={`field-error${
-                  error ? "" : " hidden"
-                }`}
+                className={`field-error${error ? "" : " hidden"
+                  }`}
               >
                 {error}
               </div>
@@ -385,7 +381,7 @@ function LeafField({
         </>
       ) : (
         <>
-          {}
+          { }
           <div className="field-label-row">
             <label htmlFor={id}>
               {attr.label}
@@ -412,9 +408,8 @@ function LeafField({
           {renderInput()}
 
           <div
-            className={`field-error${
-              error ? "" : " hidden"
-            }`}
+            className={`field-error${error ? "" : " hidden"
+              }`}
           >
             {error}
           </div>
@@ -423,7 +418,7 @@ function LeafField({
     </div>
   );
 
- 
+
   function renderInput() {
     if (attr.dataType === "ENUM") {
       return (
@@ -500,13 +495,13 @@ function LeafField({
                       const next =
                         e.target.checked
                           ? [
-                              ...selected,
-                              option,
-                            ]
+                            ...selected,
+                            option,
+                          ]
                           : selected.filter(
-                              (v) =>
-                                v !== option
-                            );
+                            (v) =>
+                              v !== option
+                          );
 
                       setValue(
                         path,
@@ -534,10 +529,12 @@ function LeafField({
       const q =
         (value as
           | {
-              value?: string;
-              unit?: string;
-            }
+            value?: string;
+            unit?: string;
+          }
           | undefined) ?? {};
+
+      const hasUnitOptions = Array.isArray(attr.unitOptions) && attr.unitOptions.length > 0;
 
       return (
         <div
@@ -557,18 +554,38 @@ function LeafField({
             }
           />
 
-          <input
-            type="text"
-            placeholder="Einheit"
-            value={q.unit ?? ""}
-            onChange={(e) =>
-              setValue(
-                [...path, "unit"],
-                e.target.value
-              )
-            }
-          />
-        </div>
+          {hasUnitOptions ? (
+            <select
+              value={q.unit ?? ""}
+              onChange={(e) =>
+                setValue(
+                  [...path, "unit"],
+                  e.target.value
+                )
+              }
+            >
+              <option value="">Select Unit</option>
+              {attr.unitOptions!.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          ) : (
+
+            <input
+              type="text"
+              placeholder="Unit"
+              value={q.unit ?? ""}
+              onChange={(e) =>
+                setValue(
+                  [...path, "unit"],
+                  e.target.value
+                )
+              }
+            />
+          )}
+            </div>
       );
     }
 
@@ -597,8 +614,8 @@ function LeafField({
       attr.dataType === "NUMBER"
         ? "number"
         : attr.dataType === "DATE"
-        ? "date"
-        : "text";
+          ? "date"
+          : "text";
 
     const stringValue =
       (value as string | undefined) ??

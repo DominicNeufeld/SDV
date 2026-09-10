@@ -71,7 +71,8 @@ public class SchemaService {
                 def.isRepeatable(),
                 null,   
                 null   ,
-                def.getLink() 
+                def.getLink(),
+                def.getUnitOptions()
         );
     }
 
@@ -93,7 +94,8 @@ public class SchemaService {
                 def.isRepeatable(),
                 null, 
                 null   ,
-                def.getLink()
+                def.getLink(),
+                def.getUnitOptions()
         );
     }
     // Convert variant attribute to DTO
@@ -114,7 +116,8 @@ public class SchemaService {
                 def.isRepeatable(),
                 def.getVariantOf().getCode(),
                 def.getVariantKey(),
-                def.getLink()
+                def.getLink(),
+                def.getUnitOptions()
         );
     }
 

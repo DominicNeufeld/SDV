@@ -8,7 +8,8 @@ CREATE TABLE attribute_definitions (
     data_type     VARCHAR(20)  NOT NULL,              
     unit          VARCHAR(50),                        
     enum_values   JSONB,
-    link          VARCHAR(500),                       
+    link          VARCHAR(500),   
+    unit_options  JSONB,                   
     created_at    TIMESTAMP NOT NULL DEFAULT now(),
     updated_at    TIMESTAMP NOT NULL DEFAULT now()
 );

@@ -26,6 +26,8 @@ public record AttributeSchemaDto(
 
         String variantKey,
 
-        String link
-) {
-}
+        String link,
+
+        List<String> unitOptions
+)
+{}
