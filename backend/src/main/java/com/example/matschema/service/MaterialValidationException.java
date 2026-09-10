@@ -8,11 +8,13 @@ public class MaterialValidationException extends RuntimeException {
 
     private final List<ValidationErrorDto> errors;
 
+    // Constructor
     public MaterialValidationException(List<ValidationErrorDto> errors) {
         super("Validation failed: " + errors.size() + " error/s");
         this.errors = errors;
     }
 
+    // Get validation errors
     public List<ValidationErrorDto> getErrors() {
         return errors;
     }

@@ -15,11 +15,13 @@ public class SchemaController {
 
     private final SchemaService schemaService;
 
+    // Get all categories
     @GetMapping
     public List<CategorySummaryDto> listCategories() {
         return schemaService.listCategories();
     }
 
+    // Get schema by code
     @GetMapping("/{code}/schema")
     public CategorySchemaDto getSchema(@PathVariable String code) {
         return schemaService.getSchema(code);

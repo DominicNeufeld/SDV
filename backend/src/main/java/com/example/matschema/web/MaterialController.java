@@ -15,12 +15,14 @@ public class MaterialController {
 
     private final MaterialService materialService;
 
+    // Create a new material
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MaterialResponse create(@Valid @RequestBody MaterialRequest request) {
         return materialService.create(request);
     }
 
+    // Get material by id
     @GetMapping("/{id}")
     public MaterialResponse getById(@PathVariable Long id) {
         return materialService.getById(id);

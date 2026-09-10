@@ -14,6 +14,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Handle validation errors
     @ExceptionHandler(MaterialValidationException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MaterialValidationException ex) {
         List<ValidationErrorDto> errors = ex.getErrors();
@@ -23,6 +24,7 @@ public class GlobalExceptionHandler {
         ));
     }
 
+    // Handle not found errors
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(

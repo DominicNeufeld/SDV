@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface CategoryAttributeRepository extends JpaRepository<CategoryAttribute, Long> {
 
+    // Find attributes by category, sorted order
     @Query("""
             SELECT ca FROM CategoryAttribute ca
             JOIN FETCH ca.attributeDefinition

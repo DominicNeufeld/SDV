@@ -4,19 +4,26 @@ export function evaluateRule(
   rule: Rule | null | undefined,
   flatValues: Record<string, unknown>
 ): boolean {
+
+  // No Rule
   if (!rule) return true;
 
+  // And Rule
   if (rule.and) {
     return rule.and.every((r) => evaluateRule(r, flatValues));
   }
+
+  // Or Rule
   if (rule.or) {
     return rule.or.some((r) => evaluateRule(r, flatValues));
   }
 
+  // Get values for comparison
   const actual = flatValues[rule.attribute ?? ""];
   const expected = rule.value;
   const operator = rule.operator || "EQUALS";
 
+  // Check operator
   switch (operator) {
     case "EQUALS":
       return String(actual ?? "") === String(expected ?? "");

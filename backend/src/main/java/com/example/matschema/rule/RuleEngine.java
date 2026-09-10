@@ -11,10 +11,13 @@ public class RuleEngine {
 
     @SuppressWarnings("unchecked")
     public boolean evaluate(Map<String, Object> rule, Map<String, Object> currentValues) {
+
+        //Check for Empty
         if (rule == null || rule.isEmpty()) {
             return true;
         }
 
+        //Check for AND Rule
         if (rule.containsKey("and")) {
             List<Map<String, Object>> subRules = (List<Map<String, Object>>) rule.get("and");
 
@@ -26,6 +29,7 @@ public class RuleEngine {
             return true;
         }
 
+        //Check for OR Rule
         if (rule.containsKey("or")) {
             List<Map<String, Object>> subRules = (List<Map<String, Object>>) rule.get("or");
             for (Map<String, Object> subRule : subRules) {
@@ -42,6 +46,7 @@ public class RuleEngine {
         Object expected = rule.get("value");
         Object actual = currentValues.get(attribute);
 
+        // Check operator and evaluate it
         return switch (operator) {
             case "EQUALS" -> equalsLoose(actual, expected);
             case "NOT_EQUALS" -> !equalsLoose(actual, expected);
@@ -70,9 +75,11 @@ public class RuleEngine {
     }
 
     private boolean equalsLoose(Object actual, Object expected) {
+        //Null check
         if (actual == null || expected == null) {
             return Objects.equals(actual, expected);
         }
+        //Converts to string and compares
         return String.valueOf(actual).equals(String.valueOf(expected));
     }
 }

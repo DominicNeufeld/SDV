@@ -22,14 +22,18 @@ public class MaterialService {
     private final MaterialRepository materialRepository;
     private final MaterialValidationService validationService;
 
+    //Create a new material
     @Transactional
     public MaterialResponse create(MaterialRequest request) {
+
+        //Find category by code
         Category category = categoryRepository.findByCode(request.categoryCode())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found: " + request.categoryCode()));
 
-     
+        //Validate and clean the values
         Map<String, Object> cleanValues = validationService.validateAndClean(category, request.values());
 
+        //Create the material
         Material material = Material.builder()
                 .category(category)
                 .name(request.name())
@@ -38,16 +42,19 @@ public class MaterialService {
                 .updatedAt(Instant.now())
                 .build();
 
+        //Save the material
         Material saved = materialRepository.save(material);
         return toResponse(saved);
     }
 
+    //Get a material by id
     public MaterialResponse getById(Long id) {
         Material material = materialRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Material not found " + id));
         return toResponse(material);
     }
 
+    //Convert Material to MaterialResponse
     private MaterialResponse toResponse(Material m) {
         return new MaterialResponse(m.getId(), m.getCategory().getCode(), m.getName(), m.getValues());
     }

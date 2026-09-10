@@ -27,17 +27,24 @@ public class MaterialValidationService {
      * @throws MaterialValidationException if there are validation errors
      */
     public Map<String, Object> validateAndClean(Category category, Map<String, Object> submittedValues) {
+
+        // Load schema
         List<CategoryAttribute> schema = categoryAttributeRepository
                 .findByCategoryIdOrderBySortOrderAsc(category.getId());
 
+        // Collect attribute codes 
         Set<String> knownCodes = new HashSet<>();
         for (CategoryAttribute ca : schema) {
             knownCodes.add(ca.getAttributeDefinition().getCode());
         }
 
+        // Save errors
         List<ValidationErrorDto> errors = new ArrayList<>();
+
+        // Save valid values
         Map<String, Object> cleaned = new LinkedHashMap<>();
 
+        // Check for unknown attributes
         for (String submittedCode : submittedValues.keySet()) {
             if (!knownCodes.contains(submittedCode)) {
                 errors.add(new ValidationErrorDto(submittedCode,
@@ -45,7 +52,7 @@ public class MaterialValidationService {
             }
         }
 
-
+        // Validate each attribute in the schema
         for (CategoryAttribute ca : schema) {
             AttributeDefinition def = ca.getAttributeDefinition();
             String code = def.getCode();
@@ -57,6 +64,7 @@ public class MaterialValidationService {
                 continue;
             }
 
+            // Check required fields
             if (value == null || (value instanceof String s && s.isBlank())) {
                 if (ca.isRequired()) {
                     errors.add(new ValidationErrorDto(code, "Mandatory field '" + def.getLabel() + "' is missing"));
@@ -64,6 +72,7 @@ public class MaterialValidationService {
                 continue;
             }
 
+            // Check value type
             Optional<String> typeError = validateType(def, value);
             if (typeError.isPresent()) {
                 errors.add(new ValidationErrorDto(code, typeError.get()));
@@ -81,6 +90,8 @@ public class MaterialValidationService {
     }
 
     private Optional<String> validateType(AttributeDefinition def, Object value) {
+
+        // Validate the value
         return switch (def.getDataType()) {
             case STRING -> (value instanceof String)
                     ? Optional.empty()
@@ -139,7 +150,7 @@ public class MaterialValidationService {
             }
         };
     }
-
+    // Check if String can be Number
     private boolean isNumericString(Object value) {
         if (!(value instanceof String s)) {
             return false;

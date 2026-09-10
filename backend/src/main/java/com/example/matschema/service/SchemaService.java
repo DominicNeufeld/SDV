@@ -26,18 +26,23 @@ public class SchemaService {
     private final CategoryAttributeRepository categoryAttributeRepository;
     private final AttributeDefinitionRepository attributeDefinitionRepository;
 
+    // Get all categories
     public List<CategorySummaryDto> listCategories() {
         return categoryRepository.findAll().stream()
                 .map(c -> new CategorySummaryDto(c.getCode(), c.getName()))
                 .toList();
     }
 
+    // Get schema for category
     public CategorySchemaDto getSchema(String categoryCode) {
+
+        // Find category by code
         Category category = categoryRepository.findByCode(categoryCode)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found " + categoryCode));
 
         List<AttributeSchemaDto> attributes = new ArrayList<>();
 
+        // Collect top-level attributes and their descendants
         for (CategoryAttribute ca : categoryAttributeRepository.findByCategoryIdOrderBySortOrderAsc(category.getId())) {
             AttributeDefinition def = ca.getAttributeDefinition();
             attributes.add(toTopLevelDto(ca));
@@ -47,6 +52,7 @@ public class SchemaService {
         return new CategorySchemaDto(category.getCode(), category.getName(), attributes);
     }
 
+    // Convert to DTO
     private AttributeSchemaDto toTopLevelDto(CategoryAttribute ca) {
         var def = ca.getAttributeDefinition();
         return new AttributeSchemaDto(
@@ -69,7 +75,7 @@ public class SchemaService {
         );
     }
 
-
+    // Convert child attribute to DTO
     private AttributeSchemaDto toChildDto(AttributeDefinition def) {
         return new AttributeSchemaDto(
                 def.getCode(),
@@ -90,7 +96,7 @@ public class SchemaService {
                 def.getLink()
         );
     }
-
+    // Convert variant attribute to DTO
     private AttributeSchemaDto toVariantDto(AttributeDefinition def) {
         return new AttributeSchemaDto(
                 def.getCode(),
@@ -112,15 +118,18 @@ public class SchemaService {
         );
     }
 
+    // Collect child and variant attributes
     private List<AttributeSchemaDto> collectDescendants(AttributeDefinition parent) {
         List<AttributeSchemaDto> result = new ArrayList<>();
 
+        // Add Child
         for (AttributeDefinition child : attributeDefinitionRepository
                 .findByParentAttribute_IdOrderByChildSortOrderAsc(parent.getId())) {
             result.add(toChildDto(child));
             result.addAll(collectDescendants(child));
         }
 
+        // Add Variants
         for (AttributeDefinition variant : attributeDefinitionRepository.findByVariantOf_Id(parent.getId())) {
             result.add(toVariantDto(variant));
             result.addAll(collectDescendants(variant));
