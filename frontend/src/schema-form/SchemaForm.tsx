@@ -14,9 +14,12 @@ interface ValuesContextValue {
   fieldErrors: Record<string, string>;
 }
 
+// Context for shared form state
 const ValuesContext = createContext<ValuesContextValue | null>(null);
 
-function useValuesContext(): ValuesContextValue {
+// Ensure component is inside provider
+function useValuesContext(): ValuesContextValue 
+{
   const ctx = useContext(ValuesContext);
 
   if (!ctx) {
@@ -26,7 +29,7 @@ function useValuesContext(): ValuesContextValue {
   return ctx;
 }
 
-// Provider
+// Main provider for form data and actions
 export function SchemaFormProvider({
   values,
   tree,
@@ -47,6 +50,7 @@ export function SchemaFormProvider({
   const removeAt = (path: PathSegment[], index: number) =>
     onChange(removeIndexIn(values, path, index));
 
+  // Build flat values for rule evaluation
   const flatValues = useMemo(
     () => buildFlatValues(tree, values),
     [tree, values],
@@ -67,6 +71,7 @@ export function SchemaFormProvider({
   );
 }
 
+// Render all root fields
 export function SchemaFormFields({ nodes }: { nodes: AttributeNode[] }) {
   return (
     <>
@@ -81,13 +86,15 @@ export function SchemaFormFields({ nodes }: { nodes: AttributeNode[] }) {
   );
 }
 
+// Evaluate visibility and required rules
 function AttributeNodeField({
   node,
   path,
 }: {
   node: AttributeNode;
   path: PathSegment[];
-}) {
+}) 
+{
   const { flatValues } = useValuesContext();
 
   const visible = evaluateRule(node.attr.visibleWhen, flatValues);
@@ -105,6 +112,7 @@ function AttributeNodeField({
   );
 }
 
+// Render external info link
 function FieldLink({ href }: { href: string }) {
   return (
     <a
@@ -120,6 +128,7 @@ function FieldLink({ href }: { href: string }) {
   );
 }
 
+// Render group fields
 function GroupField({
   node,
   path,
@@ -163,10 +172,12 @@ function GroupField({
       </div>
     );
 
+    // Add new repeatable group item
     function addItem() {
       setValue(path, [...items, {}]);
     }
 
+    // Remove group item
     function removeItem(index: number) {
       setValue(
         path,
@@ -194,6 +205,8 @@ function GroupField({
   );
 }
 
+
+// Render one group instance
 function GroupInstance({
   node,
   path,
@@ -251,6 +264,7 @@ function GroupInstance({
   );
 }
 
+// Render single input field
 function LeafField({
   node,
   path,
@@ -276,6 +290,8 @@ function LeafField({
 
   const [open, setOpen] = useState(required);
 
+
+// Open optional field on validation error
   useEffect(() => {
     if (error) {
       setOpen(true);
@@ -348,7 +364,10 @@ function LeafField({
     </div>
   );
 
-  function renderInput() {
+  // Render input by data type
+  function renderInput() 
+  {
+    // Radio buttons for enum values
     if (attr.dataType === "ENUM") {
       return (
         <div className="radio-group" id={id}>
@@ -377,7 +396,7 @@ function LeafField({
         </div>
       );
     }
-
+// Checkboxes for multi-select values
     if (attr.dataType === "MULTI_ENUM") {
       const selected = Array.isArray(value) ? (value as string[]) : [];
 
@@ -413,7 +432,7 @@ function LeafField({
         </div>
       );
     }
-
+// Quantity input with unit selection
     if (attr.dataType === "QUANTITY") {
       const q =
         (value as
@@ -453,6 +472,8 @@ function LeafField({
                   const numeric = Number(rawValue);
                   if (!Number.isNaN(numeric)) 
                     {
+
+                    // Convert value when unit changes
                     const converted = convertUnitValue(
                       numeric,
                       oldUnit,
@@ -489,7 +510,7 @@ function LeafField({
         </div>
       );
     }
-
+// Checkbox for boolean values
     if (attr.dataType === "BOOLEAN") {
       const checked = Boolean(value ?? false);
 
@@ -513,6 +534,7 @@ function LeafField({
     const stringValue =
       (value as string | undefined) ?? attr.defaultValue ?? "";
 
+  // Default text, number or date input
     return (
       <input
         type={inputType}

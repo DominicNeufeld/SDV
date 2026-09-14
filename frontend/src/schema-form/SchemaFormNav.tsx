@@ -3,13 +3,16 @@ import type { AttributeNode } from "./types";
 
 export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] }) 
 {
+  // Track the currently active navigation item
   const [activeCode, setActiveCode] = useState<string | null>(
     nodes[0]?.attr.code ?? null
   );
 
+  // Observe form sections and update the active item on scroll
   useEffect(() => {
     if (nodes.length === 0) return;
 
+    // Find the corresponding form elements
     const elements = nodes
       .map((node) =>
         document.querySelector<HTMLElement>(
@@ -20,6 +23,7 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] })
 
     if (elements.length === 0) return;
 
+    // Watch which section is currently visible
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -44,12 +48,14 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] })
         threshold: 0,
       }
     );
-
+  // Start observing all form sections
     elements.forEach((element) => observer.observe(element));
 
+  // Clean up the observer
     return () => observer.disconnect();
   }, [nodes]);
 
+  // Scroll to the selected form section
   function scrollTo(code: string) 
   {
     const element = document.querySelector<HTMLElement>(
@@ -66,6 +72,7 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] })
     setActiveCode(code);
   }
 
+  // Scroll to the JSON output panel
   function scrollToJson() 
   {
     const element = document.querySelector<HTMLElement>(
@@ -79,12 +86,13 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] })
       block: "start",
     });
   }
-
+  // Render nothing if there are no nodes
   if (nodes.length === 0)
   {
     return null;
   }
-
+  
+  // Render the side navigation
   return (
     <nav className="side-nav" aria-label="Formular-Navigation">
       <div className="side-nav-inner">
