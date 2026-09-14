@@ -9,12 +9,14 @@ export function evaluateRule(
   if (!rule) return true;
 
   // And Rule
-  if (rule.and) {
+  if (rule.and)
+  {
     return rule.and.every((r) => evaluateRule(r, flatValues));
   }
 
   // Or Rule
-  if (rule.or) {
+  if (rule.or) 
+  {
     return rule.or.some((r) => evaluateRule(r, flatValues));
   }
 
@@ -24,7 +26,8 @@ export function evaluateRule(
   const operator = rule.operator || "EQUALS";
 
   // Check operator
-  switch (operator) {
+  switch (operator) 
+  {
     case "EQUALS":
       return String(actual ?? "") === String(expected ?? "");
     case "NOT_EQUALS":

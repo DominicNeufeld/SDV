@@ -159,8 +159,8 @@ child_layer_thickness AS (
 ),
 child_interlayer_spacing AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
-    SELECT 'interlayerSpacing', 'Interlayer Spacing', NULL, 'QUANTITY', NULL, NULL, l.id, false, 30,
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+    SELECT 'interlayerSpacing', 'Interlayer Spacing', NULL, 'QUANTITY', NULL,'["Å", "nm", "µm"]'::jsonb, NULL, l.id, false, 30,
            '{"attribute": "layerType", "operator": "EQUALS", "value": "multilayer"}'::jsonb
     FROM shape_layer l
     RETURNING id
@@ -185,8 +185,8 @@ shape_wire AS (
 ),
 child_wire_diameter AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'wireDiameter', 'Diameter', NULL, 'QUANTITY', NULL, NULL, w.id, false, 10
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
+    SELECT 'wireDiameter', 'Diameter', NULL, 'QUANTITY', NULL,'["µm", "mm", "cm"]'::jsonb, NULL, w.id, false, 10
     FROM shape_wire w
     RETURNING id
 ),

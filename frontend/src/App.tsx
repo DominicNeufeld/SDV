@@ -6,23 +6,27 @@ import { SchemaFormFields, SchemaFormProvider } from "./schema-form/SchemaForm";
 import { SchemaFormNav } from "./schema-form/SchemaFormNav";
 import { getIn } from "./schema-form/valuePath";
 
-interface Category {
+interface Category 
+{
   code: string;
   name: string;
 }
 
-interface FieldError {
+interface FieldError 
+{
   attribute: string;
   message: string;
 }
 
-async function fetchJson<T>(url: string): Promise<T> {
+async function fetchJson<T>(url: string): Promise<T> 
+{
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${url} -> ${res.status}`);
   return res.json() as Promise<T>;
 }
 
-export default function App() {
+export default function App() 
+{
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [schema, setSchema] = useState<CategorySchema | null>(null);

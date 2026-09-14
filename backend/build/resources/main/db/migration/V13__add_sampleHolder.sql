@@ -47,25 +47,25 @@ sample_holder_size AS (
 ),
 holder_size_x AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit,unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
     SELECT 'holderSizeX', 'Size X', 'Size of the sample holder in the x dimension (e.g. the diameter of a cylinder).',
-           'QUANTITY', NULL, NULL, shs.id, false, 10
+           'QUANTITY', NULL, '["mm", "cm", "m"]'::jsonb, NULL, shs.id, false, 10
     FROM sample_holder_size shs
     RETURNING id
 ),
 holder_size_y AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit,unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
     SELECT 'holderSizeY', 'Size Y', 'Size of the sample holder in the y dimension.',
-           'QUANTITY', NULL, NULL, shs.id, false, 20
+           'QUANTITY', NULL, '["mm", "cm", "m"]'::jsonb, NULL, shs.id, false, 20
     FROM sample_holder_size shs
     RETURNING id
 ),
 holder_size_z AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit,unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
     SELECT 'holderSizeZ', 'Size Z', 'Size of the sample holder in the z dimension (e.g. the height of a cylinder).',
-           'QUANTITY', NULL, NULL, shs.id, false, 30
+           'QUANTITY', NULL, '["mm", "cm", "m"]'::jsonb, NULL, shs.id, false, 30
     FROM sample_holder_size shs
     RETURNING id
 ),

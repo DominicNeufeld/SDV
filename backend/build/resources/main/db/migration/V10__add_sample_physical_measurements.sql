@@ -45,9 +45,9 @@ size_z AS (
 
 sample_mass AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+        (code, label, description, data_type,unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleMass', 'Sample Mass', 'Mass of the sample.',
-           'QUANTITY',  '["kg", "µm", "mm", "cm"]'::jsonb, NULL, sd.id, false, 80, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleMass?clang='
+           'QUANTITY', NULL, '["qg", "rg", "yg","zg", "ag", "fg","pg", "ng", "μg", "mg", "g", "kg", "Mg", "Gg"]'::jsonb, NULL, sd.id, false, 80, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleMass?clang='
     FROM sample_description sd
     RETURNING id
 ),
@@ -57,9 +57,9 @@ sample_mass AS (
 
 sample_volume AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
     SELECT 'sampleVolume', 'Sample Volume', 'Relevant for gas, liquid and powder.',
-           'QUANTITY', NULL, NULL, sd.id, false, 90,
+           'QUANTITY', NULL, '["µl", "ml", "l", "cm³"]'::jsonb, NULL, sd.id, false, 90,
            '{"or": [{"attribute": "charPhaseOfMatter", "operator": "IN", "value": ["gas", "liquid"]}, {"attribute": "shapeOptions", "operator": "EQUALS", "value": "powder"}]}'::jsonb
     FROM sample_description sd
     RETURNING id
@@ -117,8 +117,8 @@ gas_pressure_quant AS (
 ),
 gas_pressure_quant_value AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'gasPressureQuantitativeValue', 'Value', NULL, 'QUANTITY', NULL, NULL, q.id, false, 10
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
+    SELECT 'gasPressureQuantitativeValue', 'Value', NULL, 'QUANTITY', NULL, '["mbar", "bar", "Pa", "kPa", "atm", "psi"]'::jsonb, NULL, q.id, false, 10
     FROM gas_pressure_quant q
     RETURNING id
 ),

@@ -4,12 +4,13 @@ import { getIn } from "./valuePath";
 export function buildFlatValues(
   nodes: AttributeNode[],
   values: unknown
-): Record<string, unknown> {
+): Record<string, unknown> 
+{
   const flat: Record<string, unknown> = {};
 
   // Process each node
-  function walk(node: AttributeNode, path: PathSegment[]) {
-
+  function walk(node: AttributeNode, path: PathSegment[]) 
+  {
     // Get current value
     flat[node.attr.code] = getIn(values, path);
 
@@ -27,7 +28,8 @@ export function buildFlatValues(
     }
   }
 
-  for (const node of nodes) {
+  for (const node of nodes) 
+  {
     walk(node, [node.attr.code]);
   }
 

@@ -47,7 +47,7 @@ sample_mass AS (
     INSERT INTO attribute_definitions
         (code, label, description, data_type,unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'sampleMass', 'Sample Mass', 'Mass of the sample.',
-           'QUANTITY', NULL, '["qg", "rg", "yg","zg", "ag", "fg","pg", "ng", "μg", "mg", "g", "kg, Mg, Gg"]'::jsonb, NULL, sd.id, false, 80, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleMass?clang='
+           'QUANTITY', NULL, '["qg", "rg", "yg","zg", "ag", "fg","pg", "ng", "μg", "mg", "g", "kg", "Mg", "Gg"]'::jsonb, NULL, sd.id, false, 80, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SampleMass?clang='
     FROM sample_description sd
     RETURNING id
 ),

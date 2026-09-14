@@ -55,7 +55,7 @@ docker stop matschema-postgres
 docker rm -v matschema-postgres   
 
 docker volume ls
-docker volume rm <name-des-volumes>
+docker volume rm <name-of-the-volumes>
 
 docker run -d \
   --name matschema-postgres \

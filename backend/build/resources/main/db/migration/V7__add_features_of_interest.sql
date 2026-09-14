@@ -154,13 +154,13 @@ SELECT 'particleShape', 'Particle Shape', NULL, 'STRING', NULL, NULL, p.id, fals
        '{"attribute": "particleType", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
 FROM attribute_definitions p WHERE p.code = 'particles';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
-SELECT 'minParticleSize', 'Min. Particle Size', NULL, 'QUANTITY', NULL, NULL, p.id, false, 30,
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+SELECT 'minParticleSize', 'Min. Particle Size', NULL, 'QUANTITY', NULL, '["nm", "µm", "mm"]'::jsonb, NULL, p.id, false, 30,
        '{"attribute": "particleType", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
 FROM attribute_definitions p WHERE p.code = 'particles';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
-SELECT 'maxParticleSize', 'Max. Particle Size', NULL, 'QUANTITY', NULL, NULL, p.id, false, 40,
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
+SELECT 'maxParticleSize', 'Max. Particle Size', NULL, 'QUANTITY', NULL,'["nm", "µm", "mm"]'::jsonb, NULL, p.id, false, 40,
        '{"attribute": "particleType", "operator": "NOT_EQUALS", "value": "not applicable"}'::jsonb
 FROM attribute_definitions p WHERE p.code = 'particles';
 

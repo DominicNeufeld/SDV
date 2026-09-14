@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import type { AttributeNode } from "./types";
 
-export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] }) {
+export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] }) 
+{
   const [activeCode, setActiveCode] = useState<string | null>(
     nodes[0]?.attr.code ?? null
   );
@@ -32,7 +33,8 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] }) {
           const element = visible[0].target as HTMLElement;
           const code = element.dataset.attributeCode;
 
-          if (code) {
+          if (code) 
+          {
             setActiveCode(code);
           }
         }
@@ -48,7 +50,8 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] }) {
     return () => observer.disconnect();
   }, [nodes]);
 
-  function scrollTo(code: string) {
+  function scrollTo(code: string) 
+  {
     const element = document.querySelector<HTMLElement>(
       `[data-attribute-code="${CSS.escape(code)}"]`
     );
@@ -63,7 +66,8 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] }) {
     setActiveCode(code);
   }
 
-  function scrollToJson() {
+  function scrollToJson() 
+  {
     const element = document.querySelector<HTMLElement>(
       ".panel--terminal"
     );
@@ -76,7 +80,8 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] }) {
     });
   }
 
-  if (nodes.length === 0) {
+  if (nodes.length === 0)
+  {
     return null;
   }
 

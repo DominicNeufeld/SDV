@@ -3,8 +3,8 @@ import type { AttributeNode, PathSegment } from "./types";
 import { evaluateRule } from "./rules";
 import { findDiscriminatorChild } from "./tree";
 import { buildFlatValues } from "./flatValues";
+import { convertUnitValue } from "./unitConversion";
 import { getIn, removeIndexIn, setIn } from "./valuePath";
-
 
 interface ValuesContextValue {
   values: unknown;
@@ -20,9 +20,7 @@ function useValuesContext(): ValuesContextValue {
   const ctx = useContext(ValuesContext);
 
   if (!ctx) {
-    throw new Error(
-      "SchemaForm Components have to be in <SchemaFormProvider>"
-    );
+    throw new Error("SchemaForm Components have to be in <SchemaFormProvider>");
   }
 
   return ctx;
@@ -49,7 +47,10 @@ export function SchemaFormProvider({
   const removeAt = (path: PathSegment[], index: number) =>
     onChange(removeIndexIn(values, path, index));
 
-  const flatValues = useMemo(() => buildFlatValues(tree, values), [tree, values]);
+  const flatValues = useMemo(
+    () => buildFlatValues(tree, values),
+    [tree, values],
+  );
 
   return (
     <ValuesContext.Provider
@@ -66,12 +67,7 @@ export function SchemaFormProvider({
   );
 }
 
-
-export function SchemaFormFields({
-  nodes,
-}: {
-  nodes: AttributeNode[];
-}) {
+export function SchemaFormFields({ nodes }: { nodes: AttributeNode[] }) {
   return (
     <>
       {nodes.map((node) => (
@@ -84,7 +80,6 @@ export function SchemaFormFields({
     </>
   );
 }
-
 
 function AttributeNodeField({
   node,
@@ -102,24 +97,14 @@ function AttributeNodeField({
     : Boolean(node.attr.required);
 
   if (node.attr.dataType === "GROUP") {
-    return (
-      <GroupField
-        node={node}
-        path={path}
-        visible={visible}
-      />
-    );
+    return <GroupField node={node} path={path} visible={visible} />;
   }
 
   return (
-    <LeafField
-      node={node}
-      path={path}
-      visible={visible}
-      required={required}
-    />
+    <LeafField node={node} path={path} visible={visible} required={required} />
   );
 }
+
 function FieldLink({ href }: { href: string }) {
   return (
     <a
@@ -151,8 +136,7 @@ function GroupField({
 
     return (
       <div
-        className={`field field--group${visible ? "" : " hidden"
-          }`}
+        className={`field field--group${visible ? "" : " hidden"}`}
         data-attribute-code={node.attr.code}
       >
         <div className="group-legend">
@@ -160,9 +144,7 @@ function GroupField({
           {node.attr.link && <FieldLink href={node.attr.link} />}
 
           {node.attr.description && (
-            <div className="field-description">
-              {node.attr.description}
-            </div>
+            <div className="field-description">{node.attr.description}</div>
           )}
         </div>
 
@@ -175,11 +157,7 @@ function GroupField({
           />
         ))}
 
-        <button
-          type="button"
-          className="btn-add"
-          onClick={addItem}
-        >
+        <button type="button" className="btn-add" onClick={addItem}>
           + {node.attr.label} add
         </button>
       </div>
@@ -192,15 +170,14 @@ function GroupField({
     function removeItem(index: number) {
       setValue(
         path,
-        items.filter((_, i) => i !== index)
+        items.filter((_, i) => i !== index),
       );
     }
   }
 
   return (
     <div
-      className={`field field--group${visible ? "" : " hidden"
-        }`}
+      className={`field field--group${visible ? "" : " hidden"}`}
       data-attribute-code={node.attr.code}
     >
       <div className="group-legend">
@@ -208,34 +185,29 @@ function GroupField({
         {node.attr.link && <FieldLink href={node.attr.link} />}
 
         {node.attr.description && (
-          <div className="field-description">
-            {node.attr.description}
-          </div>
+          <div className="field-description">{node.attr.description}</div>
         )}
       </div>
 
-      <GroupInstance
-        node={node}
-        path={path}
-      />
+      <GroupInstance node={node} path={path} />
     </div>
   );
 }
-
 
 function GroupInstance({
   node,
   path,
   onRemove,
-}: {
+}: 
+{
   node: AttributeNode;
   path: PathSegment[];
   onRemove?: () => void;
-}) {
+}) 
+{
   const { values } = useValuesContext();
 
-  const instanceValues =
-    (getIn(values, path) as Record<string, unknown>) ?? {};
+  const instanceValues = (getIn(values, path) as Record<string, unknown>) ?? {};
 
   const discriminator = findDiscriminatorChild(node);
 
@@ -244,7 +216,7 @@ function GroupInstance({
     : undefined;
 
   const selectedVariant = node.variants.find(
-    (v) => v.attr.variantKey === selectedVariantKey
+    (v) => v.attr.variantKey === selectedVariantKey,
   );
 
   return (
@@ -279,7 +251,6 @@ function GroupInstance({
   );
 }
 
-
 function LeafField({
   node,
   path,
@@ -291,11 +262,7 @@ function LeafField({
   visible: boolean;
   required: boolean;
 }) {
-  const {
-    values,
-    setValue,
-    fieldErrors,
-  } = useValuesContext();
+  const { values, setValue, fieldErrors } = useValuesContext();
 
   const attr = node.attr;
 
@@ -303,17 +270,11 @@ function LeafField({
 
   const id = `field_${path.join("_")}`;
 
-
-  const error =
-    path.length === 1
-      ? fieldErrors[attr.code]
-      : undefined;
-
+  const error = path.length === 1 ? fieldErrors[attr.code] : undefined;
 
   const optional = !required;
 
   const [open, setOpen] = useState(required);
-
 
   useEffect(() => {
     if (error) {
@@ -321,46 +282,31 @@ function LeafField({
     }
   }, [error]);
 
-
   return (
     <div
-      className={`field${visible ? "" : " hidden"
-        }`}
+      className={`field${visible ? "" : " hidden"}`}
       data-attribute-code={attr.code}
     >
       {optional ? (
         <>
-          { }
+          {}
           <button
             type="button"
             className="optional-field-toggle"
-            onClick={() =>
-              setOpen((current) => !current)
-            }
+            onClick={() => setOpen((current) => !current)}
             aria-expanded={open}
             aria-controls={`${id}_content`}
           >
-            <span className="optional-field-arrow">
-              {open ? "▾" : "▸"}
-            </span>
+            <span className="optional-field-arrow">{open ? "▾" : "▸"}</span>
 
-            <span className="optional-field-label">
-              {attr.label}
-            </span>
+            <span className="optional-field-label">{attr.label}</span>
 
-            {attr.unit && (
-              <span className="field-unit">
-                ({attr.unit})
-              </span>
-            )}
+            {attr.unit && <span className="field-unit">({attr.unit})</span>}
           </button>
 
-          { }
+          {}
           {open && (
-            <div
-              id={`${id}_content`}
-              className="optional-field-content"
-            >
+            <div id={`${id}_content`} className="optional-field-content">
               {(attr.description || attr.link) && (
                 <div className="field-description">
                   {attr.description}
@@ -370,10 +316,7 @@ function LeafField({
 
               {renderInput()}
 
-              <div
-                className={`field-error${error ? "" : " hidden"
-                  }`}
-              >
+              <div className={`field-error${error ? "" : " hidden"}`}>
                 {error}
               </div>
             </div>
@@ -381,21 +324,13 @@ function LeafField({
         </>
       ) : (
         <>
-          { }
+          {}
           <div className="field-label-row">
-            <label htmlFor={id}>
-              {attr.label}
-            </label>
+            <label htmlFor={id}>{attr.label}</label>
 
-            <span className="required-marker">
-              *
-            </span>
+            <span className="required-marker">*</span>
 
-            {attr.unit && (
-              <span className="field-unit">
-                ({attr.unit})
-              </span>
-            )}
+            {attr.unit && <span className="field-unit">({attr.unit})</span>}
           </div>
 
           {(attr.description || attr.link) && (
@@ -407,162 +342,134 @@ function LeafField({
 
           {renderInput()}
 
-          <div
-            className={`field-error${error ? "" : " hidden"
-              }`}
-          >
-            {error}
-          </div>
+          <div className={`field-error${error ? "" : " hidden"}`}>{error}</div>
         </>
       )}
     </div>
   );
 
-
   function renderInput() {
     if (attr.dataType === "ENUM") {
       return (
-        <div
-          className="radio-group"
-          id={id}
-        >
-          {(attr.enumValues || []).map(
-            (option, index) => {
-              const optionId = `${id}_${index}`;
+        <div className="radio-group" id={id}>
+          {(attr.enumValues || []).map((option, index) => {
+            const optionId = `${id}_${index}`;
 
-              const checked =
-                (value ?? attr.defaultValue) ===
-                option;
+            const checked = (value ?? attr.defaultValue) === option;
 
-              return (
-                <div
-                  className="radio-option"
-                  key={option}
-                >
-                  <input
-                    type="radio"
-                    id={optionId}
-                    name={id}
-                    value={option}
-                    checked={checked}
-                    onChange={() =>
-                      setValue(path, option)
-                    }
-                  />
+            return (
+              <div className="radio-option" key={option}>
+                <input
+                  type="radio"
+                  id={optionId}
+                  name={id}
+                  value={option}
+                  checked={checked}
+                  onChange={() => setValue(path, option)}
+                />
 
-                  <label
-                    htmlFor={optionId}
-                    className="radio-label"
-                  >
-                    {option}
-                  </label>
-                </div>
-              );
-            }
-          )}
+                <label htmlFor={optionId} className="radio-label">
+                  {option}
+                </label>
+              </div>
+            );
+          })}
         </div>
       );
     }
 
     if (attr.dataType === "MULTI_ENUM") {
-      const selected = Array.isArray(value)
-        ? (value as string[])
-        : [];
+      const selected = Array.isArray(value) ? (value as string[]) : [];
 
       return (
-        <div
-          className="checkbox-group"
-          id={id}
-        >
-          {(attr.enumValues || []).map(
-            (option, index) => {
-              const optionId = `${id}_${index}`;
+        <div className="checkbox-group" id={id}>
+          {(attr.enumValues || []).map((option, index) => {
+            const optionId = `${id}_${index}`;
 
-              const checked =
-                selected.includes(option);
+            const checked = selected.includes(option);
 
-              return (
-                <div
-                  className="checkbox-option"
-                  key={option}
-                >
-                  <input
-                    type="checkbox"
-                    id={optionId}
-                    value={option}
-                    checked={checked}
-                    onChange={(e) => {
-                      const next =
-                        e.target.checked
-                          ? [
-                            ...selected,
-                            option,
-                          ]
-                          : selected.filter(
-                            (v) =>
-                              v !== option
-                          );
+            return (
+              <div className="checkbox-option" key={option}>
+                <input
+                  type="checkbox"
+                  id={optionId}
+                  value={option}
+                  checked={checked}
+                  onChange={(e) => {
+                    const next = e.target.checked
+                      ? [...selected, option]
+                      : selected.filter((v) => v !== option);
 
-                      setValue(
-                        path,
-                        next
-                      );
-                    }}
-                  />
+                    setValue(path, next);
+                  }}
+                />
 
-                  <label
-                    htmlFor={optionId}
-                    className="radio-label"
-                  >
-                    {option}
-                  </label>
-                </div>
-              );
-            }
-          )}
+                <label htmlFor={optionId} className="radio-label">
+                  {option}
+                </label>
+              </div>
+            );
+          })}
         </div>
       );
     }
-
 
     if (attr.dataType === "QUANTITY") {
       const q =
         (value as
           | {
-            value?: string;
-            unit?: string;
-          }
+              value?: string;
+              unit?: string;
+            }
           | undefined) ?? {};
 
-      const hasUnitOptions = Array.isArray(attr.unitOptions) && attr.unitOptions.length > 0;
+      const hasUnitOptions =
+        Array.isArray(attr.unitOptions) && attr.unitOptions.length > 0;
 
       return (
-        <div
-          className="quantity-group"
-          id={id}
-        >
+        <div className="quantity-group" id={id}>
           <input
             type="number"
             step="any"
             placeholder="Wert"
             value={q.value ?? ""}
-            onChange={(e) =>
-              setValue(
-                [...path, "value"],
-                e.target.value
-              )
-            }
+            onChange={(e) => setValue([...path, "value"], e.target.value)}
           />
 
           {hasUnitOptions ? (
             <select
               value={q.unit ?? ""}
-              onChange={(e) =>
-                setValue(
-                  [...path, "unit"],
-                  e.target.value
-                )
-              }
+             onChange={(e) => {
+                const newUnit = e.target.value;
+                const oldUnit = q.unit;
+                const rawValue = q.value;
+ 
+                if (
+                  oldUnit &&
+                  newUnit &&
+                  rawValue !== undefined &&
+                  rawValue !== ""
+                ) {
+                  const numeric = Number(rawValue);
+                  if (!Number.isNaN(numeric)) 
+                    {
+                    const converted = convertUnitValue(
+                      numeric,
+                      oldUnit,
+                      newUnit
+                    );
+                    if (converted !== null) {
+                      setValue(path, {
+                        value: String(converted),
+                        unit: newUnit,
+                      });
+                      return;
+                    }
+                  }
+                }
+ 
+                setValue([...path, "unit"], newUnit);
+              }}
             >
               <option value="">Select Unit</option>
               {attr.unitOptions!.map((option) => (
@@ -572,40 +479,26 @@ function LeafField({
               ))}
             </select>
           ) : (
-
             <input
               type="text"
               placeholder="Unit"
               value={q.unit ?? ""}
-              onChange={(e) =>
-                setValue(
-                  [...path, "unit"],
-                  e.target.value
-                )
-              }
+              onChange={(e) => setValue([...path, "unit"], e.target.value)}
             />
           )}
-            </div>
+        </div>
       );
     }
 
-
     if (attr.dataType === "BOOLEAN") {
-      const checked = Boolean(
-        value ?? false
-      );
+      const checked = Boolean(value ?? false);
 
       return (
         <input
           type="checkbox"
           id={id}
           checked={checked}
-          onChange={(e) =>
-            setValue(
-              path,
-              e.target.checked
-            )
-          }
+          onChange={(e) => setValue(path, e.target.checked)}
         />
       );
     }
@@ -618,26 +511,15 @@ function LeafField({
           : "text";
 
     const stringValue =
-      (value as string | undefined) ??
-      attr.defaultValue ??
-      "";
+      (value as string | undefined) ?? attr.defaultValue ?? "";
 
     return (
       <input
         type={inputType}
         id={id}
-        step={
-          attr.dataType === "NUMBER"
-            ? "any"
-            : undefined
-        }
+        step={attr.dataType === "NUMBER" ? "any" : undefined}
         value={stringValue}
-        onChange={(e) =>
-          setValue(
-            path,
-            e.target.value
-          )
-        }
+        onChange={(e) => setValue(path, e.target.value)}
       />
     );
   }

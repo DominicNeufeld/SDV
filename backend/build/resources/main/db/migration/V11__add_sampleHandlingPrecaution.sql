@@ -109,15 +109,15 @@ handling_clean_room_conditions AS (
 ),
 handling_min_humidity AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'minHumidity', 'Min. Humidity', 'Minimal humidity at which the sample should be handled.', 'QUANTITY', NULL, NULL, sh.id, false, 50
+        (code, label, description, data_type, unit,unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
+    SELECT 'minHumidity', 'Min. Humidity', 'Minimal humidity at which the sample should be handled.', 'QUANTITY', NULL,'["%RH"]'::jsonb, NULL, sh.id, false, 50
     FROM sample_handling sh
     RETURNING id
 ),
 handling_max_humidity AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'maxHumidity', 'Max. Humidity', 'Maximal humidity at which the sample should be handled.', 'QUANTITY', NULL, NULL, sh.id, false, 60
+        (code, label, description, data_type, unit,unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
+    SELECT 'maxHumidity', 'Max. Humidity', 'Maximal humidity at which the sample should be handled.', 'QUANTITY', NULL,'["%RH"]'::jsonb, NULL, sh.id, false, 60
     FROM sample_handling sh
     RETURNING id
 ),
@@ -170,17 +170,17 @@ storage_conditions AS (
 ),
 storage_min_temperature AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+        (code, label, description, data_type, unit,unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'minStorageTemperature', 'Min. Storage Temperature', 'Minimal temperature at which the sample should be stored.',
-           'QUANTITY', NULL, NULL, sc.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageTemperature?clang='
+           'QUANTITY', NULL, '["°C", "K", "°F"]'::jsonb, NULL, sc.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageTemperature?clang='
     FROM storage_conditions sc
     RETURNING id
 ),
 storage_max_temperature AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order, link)
     SELECT 'maxStorageTemperature', 'Max. Storage Temperature', 'Maximal temperature at which the sample should be stored.',
-           'QUANTITY', NULL, NULL, sc.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageTemperature?clang='
+           'QUANTITY', NULL, '["°C", "K", "°F"]'::jsonb, NULL, sc.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/StorageTemperature?clang='
     FROM storage_conditions sc
     RETURNING id
 ),
@@ -237,8 +237,8 @@ storage_pressure_quant AS (
 ),
 storage_pressure_quant_value AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'storagePressureQuantitativeValue', 'Value', NULL, 'QUANTITY', NULL, NULL, q.id, false, 10
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
+    SELECT 'storagePressureQuantitativeValue', 'Value', NULL, 'QUANTITY', NULL, '["mbar", "bar", "Pa", "kPa", "atm", "psi"]'::jsonb, NULL, q.id, false, 10
     FROM storage_pressure_quant q
     RETURNING id
 ),
@@ -262,19 +262,19 @@ storage_pressure_qual_value AS (
 
 storage_min_humidity AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
     SELECT 'minStorageHumidity', 'Min. Storage Humidity',
            'Minimal storage humidity, to be indicated only if different from the humidity required for sample handling.',
-           'QUANTITY', NULL, NULL, sc.id, false, 40
+           'QUANTITY', NULL, '["%RH"]'::jsonb, NULL, sc.id, false, 40
     FROM storage_conditions sc
     RETURNING id
 ),
 storage_max_humidity AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, unit_options, enum_values, parent_attribute_id, child_required, child_sort_order)
     SELECT 'maxStorageHumidity', 'Max. Storage Humidity',
            'Maximal storage humidity, to be indicated only if different from the humidity required for sample handling.',
-           'QUANTITY', NULL, NULL, sc.id, false, 50
+           'QUANTITY', NULL, '["%RH"]'::jsonb, NULL, sc.id, false, 50
     FROM storage_conditions sc
     RETURNING id
 ),
