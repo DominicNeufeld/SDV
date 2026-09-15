@@ -22,7 +22,6 @@ export const UNITS: Record<string, UnitInfo> = {
   pg: { dimension: "mass", ...linear(1e-12) }, // pico
   ng: { dimension: "mass", ...linear(1e-9) }, // nano
   "µg": { dimension: "mass", ...linear(1e-6) }, // micro 
-  "μg": { dimension: "mass", ...linear(1e-6) }, // micro 2
   mg: { dimension: "mass", ...linear(1e-3) }, // milli
   g: { dimension: "mass", ...linear(1) }, // gram
   kg: { dimension: "mass", ...linear(1e3) }, // kilo
