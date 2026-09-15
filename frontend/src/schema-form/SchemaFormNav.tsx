@@ -91,10 +91,10 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] })
   {
     return null;
   }
-  
+
   // Render the side navigation
   return (
-    <nav className="side-nav" aria-label="Formular-Navigation">
+    <nav className="side-nav" aria-label="Form-Navigation">
       <div className="side-nav-inner">
 
         <div className="side-nav-track" aria-hidden="true" />
@@ -124,6 +124,7 @@ export function SchemaFormNav({ nodes }: { nodes: AttributeNode[] })
           type="button"
           className="side-nav-json"
           onClick={scrollToJson}
+          aria-label="Go to JSON output"
         >
           <span className="side-nav-json-icon">
             {"{}"}

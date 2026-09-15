@@ -450,7 +450,8 @@ function LeafField({
           <input
             type="number"
             step="any"
-            placeholder="Wert"
+            placeholder="Value"
+            aria-label="Value"
             value={q.value ?? ""}
             onChange={(e) => setValue([...path, "value"], e.target.value)}
           />
@@ -510,7 +511,7 @@ function LeafField({
         </div>
       );
     }
-// Checkbox for boolean values
+    // Checkbox for boolean values
     if (attr.dataType === "BOOLEAN") {
       const checked = Boolean(value ?? false);
 
