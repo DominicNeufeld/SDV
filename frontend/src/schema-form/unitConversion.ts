@@ -13,20 +13,20 @@ function linear(factor: number): Pick<UnitInfo, "toBase" | "fromBase"> {
 
 export const UNITS: Record<string, UnitInfo> = {
   // Mass
-  qg: { dimension: "mass", ...linear(1e-30) }, // quecto
-  rg: { dimension: "mass", ...linear(1e-27) }, // ronto
-  yg: { dimension: "mass", ...linear(1e-24) }, // yocto
-  zg: { dimension: "mass", ...linear(1e-21) }, // zepto
-  ag: { dimension: "mass", ...linear(1e-18) }, // atto
-  fg: { dimension: "mass", ...linear(1e-15) }, // femto
-  pg: { dimension: "mass", ...linear(1e-12) }, // pico
-  ng: { dimension: "mass", ...linear(1e-9) }, // nano
-  "µg": { dimension: "mass", ...linear(1e-6) }, // micro 
-  mg: { dimension: "mass", ...linear(1e-3) }, // milli
-  g: { dimension: "mass", ...linear(1) }, // gram
-  kg: { dimension: "mass", ...linear(1e3) }, // kilo
-  Mg: { dimension: "mass", ...linear(1e6) }, // mega
-  Gg: { dimension: "mass", ...linear(1e9) }, // giga
+  "quecto(qg)": { dimension: "mass", ...linear(1e-30) }, // quecto
+  "ronto(rg)": { dimension: "mass", ...linear(1e-27) }, // ronto
+  "yocto(yg)": { dimension: "mass", ...linear(1e-24) }, // yocto
+  "zepto(zg)": { dimension: "mass", ...linear(1e-21) }, // zepto
+  "atto(ag)": { dimension: "mass", ...linear(1e-18) }, // atto
+  "femto(fg)": { dimension: "mass", ...linear(1e-15) }, // femto
+  "pico(pg)": { dimension: "mass", ...linear(1e-12) }, // pico
+  "nano(ng)": { dimension: "mass", ...linear(1e-9) }, // nano
+  "micro(μg)": { dimension: "mass", ...linear(1e-6) }, // micro
+  "milli(mg)": { dimension: "mass", ...linear(1e-3) }, // milli
+  "gram(g)": { dimension: "mass", ...linear(1) }, // gram
+  "kilo(kg)": { dimension: "mass", ...linear(1e3) }, // kilo
+  "mega(Mg)": { dimension: "mass", ...linear(1e6) }, // mega
+  "giga(Gg)": { dimension: "mass", ...linear(1e9) }, // giga
 
   // Length 
   pm: { dimension: "length", ...linear(1e-12) },
