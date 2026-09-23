@@ -124,28 +124,47 @@ main {
     position: relative;
 }
 
-.btn-copy-json {
+
+.terminal-actions {
     position: absolute;
     right: 16px;
     bottom: 16px;
-
+    display: flex;
+    gap: 8px;
+}
+ 
+.btn-copy-json,
+.btn-export-json {
     border: 1px solid var(--terminal-accent);
     background: transparent;
     color: var(--terminal-accent);
-
+ 
     border-radius: 6px;
     padding: 6px 10px;
-
+ 
     font-family: var(--font-mono);
     font-size: 0.8rem;
-
+ 
     cursor: pointer;
 }
-
-.btn-copy-json:hover {
+ 
+.btn-copy-json:hover,
+.btn-export-json:hover {
     background: var(--terminal-accent);
     color: var(--terminal-bg);
 }
+ 
+.btn-export-json:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+ 
+.btn-export-json:disabled:hover {
+    background: transparent;
+    color: var(--terminal-accent);
+}
+ 
+ 
 
 .visually-hidden {
     position: absolute;
@@ -776,4 +795,24 @@ input[type="checkbox"] {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.import-row {
+    margin: 4px 0 20px;
+}
+ 
+.btn-import {
+    border: 1px dashed var(--accent);
+    background: transparent;
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 0.9em;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+ 
+.btn-import:hover {
+    background: var(--accent-soft);
 }

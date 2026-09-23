@@ -25,11 +25,10 @@ public class AttributeDefinition {
     @Column(nullable = false, unique = true, length = 100)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String label;
 
     private String description;
-
 
     @Enumerated(EnumType.STRING)
     @Column(name = "data_type", nullable = false, length = 40)
@@ -40,6 +39,9 @@ public class AttributeDefinition {
     @Column(name = "link", length = 500)
     private String link;
 
+    @Column(name = "term_uri", columnDefinition = "TEXT")
+    private String termUri;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "unit_options")
     private List<String> unitOptions;
@@ -48,7 +50,6 @@ public class AttributeDefinition {
     @Column(name = "enum_values")
     private List<String> enumValues;
 
- 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_attribute_id")
     private AttributeDefinition parentAttribute;
@@ -56,15 +57,12 @@ public class AttributeDefinition {
     @Column(name = "is_repeatable", nullable = false)
     private boolean repeatable;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variant_of_attribute_id")
     private AttributeDefinition variantOf;
 
-
     @Column(name = "variant_key", length = 150)
     private String variantKey;
-
 
     @Column(name = "child_required", nullable = false)
     private boolean childRequired;

@@ -19,6 +19,7 @@ New attributes are added in a Flyway SQL migration.
 - `variant_of_attribute_id` – attribute this is a variant of
 - `variant_key` – name of the variant
 - `link`- Link to the defintion(other Website)
+- `term_uri`- If you want to automatically gernerate the link, leave 'link' NULL, and leave 'label' blank as well, or enter the correct name in 'term_uri'
 
 ## Top-Level Attribute
 

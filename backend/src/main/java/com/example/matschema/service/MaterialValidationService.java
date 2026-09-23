@@ -134,7 +134,7 @@ public class MaterialValidationService {
             case GROUP -> Optional.empty();
 
             case QUANTITY -> {
-                if (!(value instanceof Map<?, ?> map)) {
+                if (!(value instanceof Map<?, ?> )) {
                     yield Optional.of("'" + def.getLabel() + "' has to be an object with 'value' and 'unit'");
                 }
                 Object numeric = ((Map<?, ?>) value).get("value");

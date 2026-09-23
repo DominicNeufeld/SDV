@@ -38,16 +38,16 @@ FROM attribute_definitions p WHERE p.code = 'defects';
 
 -- interfaces
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'interfaces', 'Interfaces', NULL, 'GROUP', NULL, NULL, p.id, false, 30
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'interfaces', 'Interfaces', NULL, 'GROUP', NULL, NULL, p.id, false, 30, 'Interfaces'
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'interfacesOptions', 'Interfaces Options',
        'Bidimensional region through which a discontinuity occurs in one or more parameter of the material.',
        'MULTI_ENUM', NULL,
        '["antiphase boundaries", "grain boundaries", "magnetic domain walls", "matrix-fiber interfaces", "matrix-particle interfaces", "phase boundaries", "stacking faults", "surfaces", "twin boundaries", "other (please specify in the comment)"]'::jsonb,
-       p.id, false, 10
+       p.id, false, 10, 'InterfacesOptions'
 FROM attribute_definitions p WHERE p.code = 'interfaces';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)

@@ -52,8 +52,8 @@ child_material_data_sheet AS (
 
 sample_visible_elements AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'sampleVisibleElements', 'Sample Visible Elements', NULL, 'GROUP', NULL, NULL, sd.id, false, 50
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+    SELECT 'sampleVisibleElements', 'Sample Visible Elements', NULL, 'GROUP', NULL, NULL, sd.id, false, 50, 'SampleVisibleElements'
     FROM sample_description sd
     RETURNING id
 ),
@@ -89,10 +89,10 @@ sample_shape AS (
 ),
 child_shape_options AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
     SELECT 'shapeOptions', 'Shape Options', NULL, 'ENUM', NULL,
            '["bulk material", "filament", "pellet", "powder", "rod/bar"]'::jsonb,
-           ss.id, false, 10
+           ss.id, false, 10, 'ShapeOptions'
     FROM sample_shape ss
     RETURNING id
 ),

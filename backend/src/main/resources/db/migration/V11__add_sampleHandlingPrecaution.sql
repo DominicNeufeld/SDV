@@ -18,8 +18,8 @@ attach_top AS (
 
 sensitivity_against AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'sensitivityAgainst', 'Sensitivity Against', NULL, 'GROUP', NULL, NULL, shp.id, false, 10
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+    SELECT 'sensitivityAgainst', 'Sensitivity Against', NULL, 'GROUP', NULL, NULL, shp.id, false, 10, 'Sensitivity Against'  
     FROM sample_handling_precaution shp
     RETURNING id
 ),
@@ -46,8 +46,8 @@ sensitivity_comments AS (
 
 safety_info AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-    SELECT 'safetyInfo', 'Safety Info', NULL, 'GROUP', NULL, NULL, shp.id, false, 20
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+    SELECT 'safetyInfo', 'Safety Info', NULL, 'GROUP', NULL, NULL, shp.id, false, 20, 'Hazard'
     FROM sample_handling_precaution shp
     RETURNING id
 ),

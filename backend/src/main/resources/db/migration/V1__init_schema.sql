@@ -3,12 +3,13 @@
 CREATE TABLE attribute_definitions (
     id            BIGSERIAL PRIMARY KEY,
     code          VARCHAR(100) NOT NULL UNIQUE,    
-    label         VARCHAR(255) NOT NULL,            
+    label         VARCHAR(255),            
     description   VARCHAR(1000),
     data_type     VARCHAR(20)  NOT NULL,              
     unit          VARCHAR(50),                        
     enum_values   JSONB,
     link          VARCHAR(500),   
+    term_uri      TEXT,  
     unit_options  JSONB,                   
     created_at    TIMESTAMP NOT NULL DEFAULT now(),
     updated_at    TIMESTAMP NOT NULL DEFAULT now()

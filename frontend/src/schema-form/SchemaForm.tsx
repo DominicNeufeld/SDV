@@ -171,7 +171,7 @@ function GroupField({
         </button>
       </div>
     );
-
+ 
     // Add new repeatable group item
     function addItem() {
       setValue(path, [...items, {}]);

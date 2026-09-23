@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./style.css";
 import type { CategorySchema } from "./schema-form/types";
 import { buildAttributeTree } from "./schema-form/tree";
@@ -27,6 +27,7 @@ async function fetchJson<T>(url: string): Promise<T>
 
 export default function App() 
 {
+  // New Render
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [schema, setSchema] = useState<CategorySchema | null>(null);
@@ -35,6 +36,11 @@ export default function App()
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [loadError, setLoadError] = useState<string | null>(null);
   const [resultOutput, setResultOutput] = useState<string>("");
+
+  // Save values
+  const importInputRef = useRef<HTMLInputElement>(null);
+
+  const pendingImportValuesRef = useRef<unknown>(null);
 
   const tree = useMemo(() => (schema ? buildAttributeTree(schema.attributes) : []), [schema]);
 
@@ -62,7 +68,17 @@ export default function App()
           `/api/categories/${selectedCategory}/schema`
         );
         setSchema(loadedSchema);
-        setValues({});
+
+        if (pendingImportValuesRef.current !== null) 
+        {
+          setValues(pendingImportValuesRef.current);
+          pendingImportValuesRef.current = null;
+        } 
+        else 
+        {
+          setValues({});
+        }
+
         setFieldErrors({});
         setLoadError(null);
       } catch (err) {
@@ -110,6 +126,72 @@ export default function App()
     }
   }
 
+ function handleExportJson() {
+    if (!resultOutput) return;
+ 
+    const blob = new Blob([resultOutput], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+ 
+    const categoryCode = schema?.categoryCode ?? "material";
+    //Replace : and . due to naming issues
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+ 
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${categoryCode}-${timestamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+ 
+    URL.revokeObjectURL(url);
+  }
+ 
+function handleImportClick() {
+    importInputRef.current?.click();
+  }
+ 
+  async function handleImportFile(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    event.target.value = "";
+    if (!file) return;
+ 
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text);
+ 
+      // Check for values
+      const importedValues =
+        parsed && typeof parsed === "object" && "values" in parsed
+          ? (parsed as { values: unknown }).values
+          : parsed;
+ 
+      // Check for category
+      const importedCategoryCode =
+        parsed && typeof parsed === "object" && "categoryCode" in parsed
+          ? String((parsed as { categoryCode: unknown }).categoryCode)
+          : undefined;
+ 
+      setLoadError(null);
+      setFieldErrors({});
+ 
+      // Check if the form has already the right section selected
+      if (importedCategoryCode && importedCategoryCode !== selectedCategory) 
+      {
+        // Save values and switch category
+        pendingImportValuesRef.current = importedValues;
+        setSelectedCategory(importedCategoryCode);
+      } 
+      else 
+      {
+        setValues(importedValues);
+      }
+    } catch (err) {
+      setLoadError("Import failed: " + err);
+    }
+  }
+
+
   return (
     <>
       <header>
@@ -149,6 +231,19 @@ export default function App()
                 </select>
               </div>
 
+              <div className="import-row">
+                <input
+                  type="file"
+                  accept=".json,application/json"
+                  ref={importInputRef}
+                  onChange={handleImportFile}
+                  className="visually-hidden"
+                />
+                <button type="button" className="btn-import" onClick={handleImportClick}>
+                  Import JSON
+                </button>
+              </div>
+
               <SchemaFormProvider values={values} onChange={setValues} fieldErrors={fieldErrors} tree={tree}>
                 <SchemaFormFields nodes={tree} />
               </SchemaFormProvider>
@@ -158,18 +253,30 @@ export default function App()
           </section>
         </div>
 
-        <section className="panel panel--terminal">
+         <section className="panel panel--terminal">
           <div className="panel-heading panel-heading--terminal">JSON</div>
           <pre className="white">{resultOutput}</pre>
-
-          <button
-            type="button"
-            className="btn-copy-json"
-            onClick={() => navigator.clipboard.writeText(resultOutput)}
-          >
-            Copy
-          </button>
+ 
+          <div className="terminal-actions">
+            <button
+              type="button"
+              className="btn-copy-json"
+              onClick={() => navigator.clipboard.writeText(resultOutput)}
+            >
+              Copy
+            </button>
+ 
+            <button
+              type="button"
+              className="btn-export-json"
+              onClick={handleExportJson}
+              disabled={!resultOutput}
+            >
+              Export
+            </button>
+          </div>
         </section>
+ 
       </main>
     </>
   );

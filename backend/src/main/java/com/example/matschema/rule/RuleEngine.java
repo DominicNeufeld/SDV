@@ -12,12 +12,12 @@ public class RuleEngine {
     @SuppressWarnings("unchecked")
     public boolean evaluate(Map<String, Object> rule, Map<String, Object> currentValues) {
 
-        //Check for Empty
+        // Check for Empty
         if (rule == null || rule.isEmpty()) {
             return true;
         }
 
-        //Check for AND Rule
+        // Check for AND Rule
         if (rule.containsKey("and")) {
             List<Map<String, Object>> subRules = (List<Map<String, Object>>) rule.get("and");
 
@@ -29,7 +29,7 @@ public class RuleEngine {
             return true;
         }
 
-        //Check for OR Rule
+        // Check for OR Rule
         if (rule.containsKey("or")) {
             List<Map<String, Object>> subRules = (List<Map<String, Object>>) rule.get("or");
             for (Map<String, Object> subRule : subRules) {
@@ -48,15 +48,70 @@ public class RuleEngine {
 
         // Check operator and evaluate it
         return switch (operator) {
+
             case "EQUALS" -> equalsLoose(actual, expected);
+
             case "NOT_EQUALS" -> !equalsLoose(actual, expected);
-            case "IN" -> expected instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(actual, v));
-            case "NOT_IN" -> !(expected instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(actual, v)));
+
+            case "IN" -> {
+                if (expected instanceof List<?> list) {
+                    boolean found = false;
+                    for (Object value : list) {
+                        if (equalsLoose(actual, value)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    yield found;
+                }
+                yield false;
+            }
+
+            case "NOT_IN" -> {
+                if (expected instanceof List<?> list) {
+                    boolean found = false;
+                    for (Object value : list) {
+                        if (equalsLoose(actual, value)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    yield !found;
+                }
+                yield true;
+            }
             case "IS_EMPTY" -> isEmptyValue(actual);
+
             case "IS_NOT_EMPTY" -> !isEmptyValue(actual);
-            case "CONTAINS" -> actual instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(v, expected));
-            case "NOT_CONTAINS" ->
-                !(actual instanceof List<?> list && list.stream().anyMatch(v -> equalsLoose(v, expected)));
+
+            case "CONTAINS" -> {
+                if (actual instanceof List<?> list) {
+                    boolean found = false;
+                    for (Object value : list) {
+                        if (equalsLoose(value, expected)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    yield found;
+                }
+                yield false;
+            }
+
+            case "NOT_CONTAINS" -> {
+                if (actual instanceof List<?> list) {
+                    boolean found = false;
+                    for (Object value : list) {
+                        if (equalsLoose(value, expected)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    yield !found;
+                }
+                yield true;
+            }
+            
             default -> throw new IllegalArgumentException("Unknown operator in visibleWhen: " + operator);
         };
     }
@@ -75,11 +130,11 @@ public class RuleEngine {
     }
 
     private boolean equalsLoose(Object actual, Object expected) {
-        //Null check
+        // Null check
         if (actual == null || expected == null) {
             return Objects.equals(actual, expected);
         }
-        //Converts to string and compares
+        // Converts to string and compares
         return String.valueOf(actual).equals(String.valueOf(expected));
     }
 }

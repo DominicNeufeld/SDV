@@ -36,8 +36,8 @@ child_sample_vendor AS (
 
 sample_purpose AS (
     INSERT INTO attribute_definitions
-        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
-    SELECT 'samplePurpose', 'Sample Purpose', NULL, 'GROUP', NULL, NULL, si.id, true, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/SamplePurpose?clang='
+        (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link, term_uri)
+    SELECT 'samplePurpose', 'Sample Purpose', NULL, 'GROUP', NULL, NULL, si.id, true, 30, NULL, 'SamplePurpose'
     FROM sample_identification si
     RETURNING id
 ),
