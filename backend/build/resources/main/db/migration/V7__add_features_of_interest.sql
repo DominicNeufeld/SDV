@@ -20,14 +20,14 @@ FROM attribute_definitions p WHERE p.code = 'functionalTest';
 
 -- defects
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'defects', 'Defects', NULL, 'GROUP', NULL, NULL, p.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Defect?clang='
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
 SELECT 'defectsOptions', 'Defects Options', NULL, 'MULTI_ENUM', NULL,
        '["cracks", "crazes", "inclusions", "pores", "voids", "dislocations", "antisite defects", "interstitial defects", "topological defects", "vacancies", "other (please specify in the comment)"]'::jsonb,
-       p.id, false, 10, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/MicroStructureFeature?clang='
+       p.id, false, 10, 'Defects Options'
 FROM attribute_definitions p WHERE p.code = 'defects';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
@@ -63,20 +63,20 @@ SELECT 'dominantStructures', 'Dominant Structures', NULL, 'GROUP', NULL, NULL, p
 FROM attribute_definitions p WHERE p.code = 'featuresOfInterest';
 
 -- reinforcementStructures
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'reinforcementStructures', 'Reinforcement Structures',
        'Constituent of a composite material which increases its stiffness and tensile strength.',
-       'GROUP', NULL, NULL, p.id, false, 10
+       'GROUP', NULL, NULL, p.id, false, 10, 'ReinforcementStructures'
 FROM attribute_definitions p WHERE p.code = 'dominantStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'reinforcingMaterial', 'Reinforcing Material', 'Material supplied as reinforcement.', 'STRING', NULL, NULL, p.id, false, 10
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'reinforcingMaterial', 'Reinforcing Material', 'Material supplied as reinforcement.', 'STRING', NULL, NULL, p.id, false, 10, 'ReinforcingMaterial'
 FROM attribute_definitions p WHERE p.code = 'reinforcementStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'reinforcementScale', 'Scale', NULL, 'ENUM', NULL,
        '["not applicable", "atomic/molecular", "nanoscopic", "microscopic", "mesoscopic", "macroscopic"]'::jsonb,
-       p.id, false, 20
+       p.id, false, 20, 'ReinforcementScale'
 FROM attribute_definitions p WHERE p.code = 'reinforcementStructures';
 
 -- clusters
@@ -95,20 +95,20 @@ SELECT 'clusterSize', 'Cluster Size', NULL, 'QUANTITY', NULL, NULL, p.id, false,
 FROM attribute_definitions p WHERE p.code = 'clusters';
 
 -- alignedStructures
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'alignedStructures', 'Aligned Structures',
        'Arrangement where constituent elements are organized in a specific direction or orientation.',
-       'GROUP', NULL, NULL, p.id, false, 30
+       'GROUP', NULL, NULL, p.id, false, 30, 'AlignedStructures'
 FROM attribute_definitions p WHERE p.code = 'dominantStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'alignedElements', 'Aligned Elements', 'Constituent of the aligned structure.', 'STRING', NULL, NULL, p.id, false, 10
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'alignedElements', 'Aligned Elements', 'Constituent of the aligned structure.', 'STRING', NULL, NULL, p.id, false, 10, 'AlignedElements'
 FROM attribute_definitions p WHERE p.code = 'alignedStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'alignedScale', 'Scale', NULL, 'ENUM', NULL,
        '["not applicable", "atomic/molecular", "nanoscopic", "microscopic", "mesoscopic", "macroscopic"]'::jsonb,
-       p.id, false, 20
+       p.id, false, 20, 'AlignedScale'
 FROM attribute_definitions p WHERE p.code = 'alignedStructures';
 
 -- grains
@@ -169,14 +169,14 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'porousStructures', 'Porous Structures', NULL, 'GROUP', NULL, NULL, p.id, false, 70, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Porous?clang='
 FROM attribute_definitions p WHERE p.code = 'dominantStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'porosity', 'Porosity',
        'Fraction of the volume of voids over the total volume, between 0 (no voids) and 1 (all voids).',
-       'NUMBER', NULL, NULL, p.id, false, 10
+       'NUMBER', NULL, NULL, p.id, false, 10, 'Porosity'
 FROM attribute_definitions p WHERE p.code = 'porousStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'percolated', 'Percolated', 'A substance passes through a porous material or medium.', 'BOOLEAN', NULL, NULL, p.id, false, 20
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'percolated', 'Percolated', 'A substance passes through a porous material or medium.', 'BOOLEAN', NULL, NULL, p.id, false, 20, 'Percolated'
 FROM attribute_definitions p WHERE p.code = 'porousStructures';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -192,16 +192,16 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'crystalStructures', 'Crystal Structures', NULL, 'GROUP', NULL, NULL, p.id, false, 80, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/CrystalStructure?clang='
 FROM attribute_definitions p WHERE p.code = 'dominantStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'crystallinity', 'Crystallinity', 'Degree of structural order in a solid.', 'ENUM', NULL,
        '["not applicable", "crystalline/single crystal", "polycrystalline", "semicrystalline", "non-crystalline/amorphous"]'::jsonb,
-       p.id, false, 10
+       p.id, false, 10, 'Crystallinity'
 FROM attribute_definitions p WHERE p.code = 'crystalStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
 SELECT 'twinned', 'Twinned',
        'Two separate crystal domains share some of the same crystal lattice points in a symmetrical manner.',
-       'BOOLEAN', NULL, NULL, p.id, false, 20
+       'BOOLEAN', NULL, NULL, p.id, false, 20, 'Twinned'
 FROM attribute_definitions p WHERE p.code = 'crystalStructures';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, child_visible_when)
@@ -216,12 +216,12 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'nanostructures', 'Nanostructures', NULL, 'GROUP', NULL, NULL, p.id, false, 90, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/NanoStructured?clang='
 FROM attribute_definitions p WHERE p.code = 'dominantStructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanoparticles', 'Nanoparticles', NULL, 'GROUP', NULL, NULL, p.id, false, 10
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'nanoparticles', 'Nanoparticles', NULL, 'GROUP', NULL, NULL, p.id, false, 10, 'Nanoparticles'
 FROM attribute_definitions p WHERE p.code = 'nanostructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanoparticleShape', 'Particle Shape', NULL, 'STRING', NULL, NULL, p.id, false, 10
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'nanoparticleShape', 'Particle Shape', NULL, 'STRING', NULL, NULL, p.id, false, 10, 'NanoparticleShape'
 FROM attribute_definitions p WHERE p.code = 'nanoparticles';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
@@ -236,22 +236,22 @@ INSERT INTO attribute_definitions (code, label, description, data_type, unit, en
 SELECT 'nanowires', 'Nanowires', NULL, 'GROUP', NULL, NULL, p.id, false, 20, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Nanowire?clang='
 FROM attribute_definitions p WHERE p.code = 'nanostructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanowireDiameter', 'Diameter', NULL, 'QUANTITY', NULL, NULL, p.id, false, 10
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'nanowireDiameter', 'Diameter', NULL, 'QUANTITY', NULL, NULL, p.id, false, 10, 'NanowireDiameter'
 FROM attribute_definitions p WHERE p.code = 'nanowires';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanowireAspectRatio', 'Aspect Ratio', 'Ratio of the length to the diameter.', 'NUMBER', NULL, NULL, p.id, false, 20
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'nanowireAspectRatio', 'Aspect Ratio', 'Ratio of the length to the diameter.', 'NUMBER', NULL, NULL, p.id, false, 20, 'NanowireAspectRatio'
 FROM attribute_definitions p WHERE p.code = 'nanowires';
 
 INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, link)
 SELECT 'nanosheets', 'Nanosheets', NULL, 'GROUP', NULL, NULL, p.id, false, 30, 'https://matwerk.datamanager.kit.edu/skosmos/SampleDescriptionVocabulary-1/de/page/Nanosheet?clang='
 FROM attribute_definitions p WHERE p.code = 'nanostructures';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanosheetThickness', 'Thickness', NULL, 'QUANTITY', NULL, NULL, p.id, false, 10
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'nanosheetThickness', 'Thickness', NULL, 'QUANTITY', NULL, NULL, p.id, false, 10, 'NanosheetThickness'
 FROM attribute_definitions p WHERE p.code = 'nanosheets';
 
-INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order)
-SELECT 'nanosheetAspectRatio', 'Aspect Ratio', 'Ratio of the lateral dimension to sheet thickness.', 'NUMBER', NULL, NULL, p.id, false, 20
+INSERT INTO attribute_definitions (code, label, description, data_type, unit, enum_values, parent_attribute_id, child_required, child_sort_order, term_uri)
+SELECT 'nanosheetAspectRatio', 'Aspect Ratio', 'Ratio of the lateral dimension to sheet thickness.', 'NUMBER', NULL, NULL, p.id, false, 20, 'NanosheetAspectRatio'
 FROM attribute_definitions p WHERE p.code = 'nanosheets';

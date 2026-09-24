@@ -7,6 +7,8 @@ import com.example.matschema.dto.ValidationErrorDto;
 import com.example.matschema.repository.CategoryAttributeRepository;
 import com.example.matschema.rule.RuleEngine;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,6 +19,8 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class MaterialValidationService {
+
+    private static final Logger log = LoggerFactory.getLogger(MaterialValidationService.class);
 
     private final CategoryAttributeRepository categoryAttributeRepository;
     private final RuleEngine ruleEngine;
@@ -44,11 +48,10 @@ public class MaterialValidationService {
         // Save valid values
         Map<String, Object> cleaned = new LinkedHashMap<>();
 
-        // Check for unknown attributes
+
         for (String submittedCode : submittedValues.keySet()) {
             if (!knownCodes.contains(submittedCode)) {
-                errors.add(new ValidationErrorDto(submittedCode,
-                        "Attribute is not defined in this category."));
+                log.debug("Ignoring unknown attribute '{}' for category '{}'", submittedCode, category.getCode());
             }
         }
 
